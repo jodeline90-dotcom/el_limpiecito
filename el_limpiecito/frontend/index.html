@@ -1,0 +1,4484 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Limpiecito</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --principal: #1a5fa8;
+      --principal-oscuro: #0d3d72;
+      --principal-claro: #e8f1fb;
+      --acento: #f5a623;
+      --acento-oscuro: #d4891a;
+      --verde-azulado: #0fa3b1;
+      --peligro: #e05c5c;
+      --exito: #27ae60;
+      --advertencia: #f39c12;
+      --texto: #1c2b3a;
+      --texto-secundario: #6b7a8d;
+      --borde: #dde4ed;
+      --fondo: #f2f5f9;
+      --blanco: #ffffff;
+      --ancho-barra-lateral: 240px;
+      --alto-encabezado: 64px;
+      --radio: 10px;
+      --sombra: 0 2px 12px rgba(0, 0, 0, 0.08);
+      --sombra-fuerte: 0 4px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+
+    .vista {
+      display: none;
+    }
+
+    .vista.activa {
+      display: block;
+    }
+
+    .distribucion-pagina {
+      display: flex;
+      min-height: 100vh;
+    }
+
+
+
+    .encabezado {
+      background: var(--principal);
+      height: var(--alto-encabezado);
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-empresa {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .logo-empresa img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .marca-logotipo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--acento);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--principal-oscuro);
+    }
+
+    .buscador-principal {
+      flex: 1;
+      max-width: 520px;
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .buscador-principal input {
+      flex: 1;
+      border: none;
+      padding: 0 16px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .buscador-principal button {
+      background: var(--acento);
+      border: none;
+      padding: 0 18px;
+      color: var(--principal-oscuro);
+      font-weight: 700;
+      font-size: 13px;
+      transition: background .2s;
+    }
+
+    .buscador-principal button:hover {
+      background: var(--acento-oscuro);
+    }
+
+    .navegacion-usuario {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .navegacion-usuario button {
+      background: transparent;
+      border: 1.5px solid rgba(255, 255, 255, .35);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all .2s;
+    }
+
+    .navegacion-usuario button:hover {
+      background: rgba(255, 255, 255, .15);
+    }
+
+    .navegacion-usuario .btn-acento {
+      background: var(--acento);
+      border-color: var(--acento);
+      color: var(--principal-oscuro);
+    }
+
+    .navegacion-usuario .btn-acento:hover {
+      background: var(--acento-oscuro);
+    }
+
+    .indicador-carrito {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--peligro);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+
+    .barra-promocional {
+      background: var(--verde-azulado);
+      color: #fff;
+      padding: 8px 32px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .navegacion-categorias {
+      background: #fff;
+      border-bottom: 1px solid var(--borde);
+      padding: 0 32px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+
+    .navegacion-categorias button {
+      background: none;
+      border: none;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--texto-secundario);
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all .2s;
+    }
+
+    .navegacion-categorias button:hover,
+    .navegacion-categorias button.activo {
+      color: var(--principal);
+      border-bottom-color: var(--principal);
+    }
+
+
+    .barra-lateral-admin {
+      width: var(--ancho-barra-lateral);
+      min-height: 100vh;
+      background: var(--principal-oscuro);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .logo-barra {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+      font-size: 17px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-barra .marca-logotipo {
+      width: 32px;
+      height: 32px;
+      font-size: 15px;
+    }
+
+    .menu-barra {
+      flex: 1;
+      padding: 12px 0;
+    }
+
+    .grupo-menu {
+      padding: 6px 0;
+    }
+
+    .etiqueta-grupo {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: rgba(255, 255, 255, .4);
+      padding: 8px 20px 4px;
+      text-transform: uppercase;
+    }
+
+    .opcion-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, .75);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+
+    .opcion-menu:hover {
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+    }
+
+    .opcion-menu.activo {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      border-left-color: var(--acento);
+    }
+
+    .icono-menu {
+      width: 16px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .contenido-principal-admin {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .barra-superior-admin {
+      background: #fff;
+      border-bottom: 1px solid var(--borde);
+      height: 56px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .barra-superior-admin h2 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .area-contenido-admin {
+      padding: 28px;
+      flex: 1;
+    }
+
+
+    .tarjeta {
+      background: #fff;
+      border-radius: var(--radio);
+      border: 1px solid var(--borde);
+      padding: 24px;
+      box-shadow: var(--sombra);
+      margin-bottom: 20px;
+    }
+
+    .titulo-tarjeta {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--principal-oscuro);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .titulo-tarjeta::before {
+      content: '';
+      width: 4px;
+      height: 18px;
+      border-radius: 2px;
+      background: var(--acento);
+      display: block;
+    }
+
+    .dos-columnas {
+      display: flex;
+      gap: 24px;
+      padding: 28px 32px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .barra-lateral-columna {
+      width: 260px;
+      flex-shrink: 0;
+    }
+
+    .columna-principal {
+      flex: 1;
+    }
+
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      border: 1.5px solid transparent;
+      transition: all .2s;
+      cursor: pointer;
+    }
+
+    .btn-primario {
+      background: var(--principal);
+      color: #fff;
+      border-color: var(--principal);
+    }
+
+    .btn-primario:hover {
+      background: var(--principal-oscuro);
+    }
+
+    .btn-acento {
+      background: var(--acento);
+      color: var(--principal-oscuro);
+      border-color: var(--acento);
+    }
+
+    .btn-acento:hover {
+      background: var(--acento-oscuro);
+    }
+
+    .btn-borde {
+      background: #fff;
+      color: var(--principal);
+      border-color: var(--principal);
+    }
+
+    .btn-borde:hover {
+      background: var(--principal-claro);
+    }
+
+    .btn-peligro {
+      background: var(--peligro);
+      color: #fff;
+      border-color: var(--peligro);
+    }
+
+    .btn-secundario {
+      background: transparent;
+      color: var(--texto-secundario);
+      border-color: var(--borde);
+    }
+
+    .btn-secundario:hover {
+      background: var(--fondo);
+    }
+
+    .btn-pequeno {
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+
+    .btn-grande {
+      padding: 13px 28px;
+      font-size: 15px;
+    }
+
+    .btn-completo {
+      width: 100%;
+    }
+
+
+    .grupo-formulario {
+      margin-bottom: 16px;
+    }
+
+    .etiqueta-formulario {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--texto);
+    }
+
+    .control-formulario {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--borde);
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+      transition: border .2s;
+      color: var(--texto);
+    }
+
+    .control-formulario:focus {
+      outline: none;
+      border-color: var(--principal);
+    }
+
+    .ayuda-formulario {
+      font-size: 12px;
+      color: var(--texto-secundario);
+      margin-top: 4px;
+    }
+
+    .error-formulario {
+      font-size: 12px;
+      color: var(--peligro);
+      margin-top: 4px;
+    }
+
+    .fila-formulario {
+      display: flex;
+      gap: 16px;
+    }
+
+    .fila-formulario .grupo-formulario {
+      flex: 1;
+    }
+
+
+    .contenedor-tabla {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--fondo);
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--texto-secundario);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      border-bottom: 1px solid var(--borde);
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--borde);
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: var(--principal-claro);
+    }
+
+
+    .insignia {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .insignia-azul {
+      background: var(--principal-claro);
+      color: var(--principal);
+    }
+
+    .insignia-verde {
+      background: #e6f9ef;
+      color: #1a7a4a;
+    }
+
+    .insignia-amarilla {
+      background: #fff8e1;
+      color: #b07a00;
+    }
+
+    .insignia-roja {
+      background: #fdeaea;
+      color: #c0392b;
+    }
+
+    .insignia-gris {
+      background: #f0f0f0;
+      color: #666;
+    }
+
+
+    .fila-estadisticas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .tarjeta-estadistica {
+      background: #fff;
+      border-radius: var(--radio);
+      border: 1px solid var(--borde);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .etiqueta-estadistica {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .valor-estadistica {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--texto);
+    }
+
+    .cambio-estadistica {
+      font-size: 12px;
+      color: var(--exito);
+      font-weight: 600;
+    }
+
+    .icono-estadistica {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+
+    .cuadricula-productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 20px;
+    }
+
+    .tarjeta-producto {
+      background: #fff;
+      border-radius: var(--radio);
+      border: 1px solid var(--borde);
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .tarjeta-producto:hover {
+      box-shadow: var(--sombra-fuerte);
+      transform: translateY(-3px);
+    }
+
+    .imagen-producto {
+      background: linear-gradient(135deg, #e8f1fb, #d0e4f7);
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: var(--principal);
+      position: relative;
+    }
+
+    .etiqueta-producto {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--acento);
+      color: var(--principal-oscuro);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .cuerpo-producto {
+      padding: 14px;
+    }
+
+    .nombre-producto {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .marca-producto {
+      font-size: 11px;
+      color: var(--texto-secundario);
+      margin-bottom: 8px;
+    }
+
+    .fila-precio-producto {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .precio-producto {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--principal);
+    }
+
+    .unidad-producto {
+      font-size: 11px;
+      color: var(--texto-secundario);
+    }
+
+    .estrellas-producto {
+      font-size: 11px;
+      color: var(--acento);
+      margin-bottom: 10px;
+    }
+
+    .tarjeta-producto .btn {
+      margin-top: 10px;
+    }
+
+
+    .tarjeta-filtro {
+      background: #fff;
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .titulo-filtro {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--principal-oscuro);
+    }
+
+    .opciones-filtro {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opcion-filtro {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .opcion-filtro input {
+      accent-color: var(--principal);
+    }
+
+    .rango-precios {
+      width: 100%;
+      accent-color: var(--principal);
+    }
+
+    .etiquetas-precio {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--texto-secundario);
+      margin-top: 4px;
+    }
+
+
+    .item-carrito {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--borde);
+      align-items: center;
+    }
+
+    .imagen-item-carrito {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background: var(--principal-claro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .info-item-carrito {
+      flex: 1;
+    }
+
+    .nombre-item-carrito {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .subtexto-item-carrito {
+      font-size: 12px;
+      color: var(--texto-secundario);
+    }
+
+    .cantidad-carrito {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .boton-cantidad {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1.5px solid var(--borde);
+      background: #fff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .precio-item-carrito {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--principal);
+      min-width: 80px;
+      text-align: right;
+    }
+
+
+    .resumen-pedido {
+      background: var(--principal-claro);
+      border-radius: var(--radio);
+      padding: 20px;
+    }
+
+    .fila-resumen {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+
+    .fila-resumen.total {
+      border-top: 2px solid var(--principal);
+      margin-top: 10px;
+      padding-top: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--principal);
+    }
+
+
+    .pagina-autenticacion {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--principal-oscuro) 0%, var(--principal) 60%, var(--verde-azulado) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .caja-autenticacion {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo-autenticacion {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo-autenticacion .marca-logotipo {
+      width: 52px;
+      height: 52px;
+      font-size: 22px;
+      margin: 0 auto 10px;
+    }
+
+    .logo-autenticacion h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--principal-oscuro);
+    }
+
+    .logo-autenticacion p {
+      font-size: 13px;
+      color: var(--texto-secundario);
+    }
+
+    .divisor-autenticacion {
+      text-align: center;
+      color: var(--texto-secundario);
+      font-size: 12px;
+      margin: 16px 0;
+      position: relative;
+    }
+
+    .divisor-autenticacion::before,
+    .divisor-autenticacion::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: var(--borde);
+    }
+
+    .divisor-autenticacion::before {
+      left: 0;
+    }
+
+    .divisor-autenticacion::after {
+      right: 0;
+    }
+
+
+    .encabezado-perfil {
+      background: linear-gradient(120deg, var(--principal-oscuro), var(--principal));
+      padding: 32px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--acento);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--principal-oscuro);
+      border: 3px solid rgba(255, 255, 255, .4);
+    }
+
+    .pestanas-perfil {
+      background: #fff;
+      border-bottom: 1px solid var(--borde);
+      padding: 0 32px;
+      display: flex;
+      gap: 0;
+    }
+
+    .pestana-perfil {
+      background: none;
+      border: none;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+      border-bottom: 3px solid transparent;
+      transition: all .2s;
+      cursor: pointer;
+    }
+
+    .pestana-perfil.activo,
+    .pestana-perfil:hover {
+      color: var(--principal);
+      border-bottom-color: var(--principal);
+    }
+
+
+    .tarjeta-pedido {
+      background: #fff;
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .numero-pedido {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .meta-pedido {
+      font-size: 12px;
+      color: var(--texto-secundario);
+    }
+
+    .total-pedido {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--principal);
+      margin-left: auto;
+    }
+
+
+    .pasos {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+    }
+
+    .paso {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--borde);
+    }
+
+    .paso.completado {
+      border-bottom-color: var(--exito);
+    }
+
+    .paso.activo {
+      border-bottom-color: var(--principal);
+    }
+
+    .numero-paso {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--borde);
+      color: var(--texto-secundario);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0 auto 6px;
+    }
+
+    .paso.activo .numero-paso {
+      background: var(--principal);
+      color: #fff;
+    }
+
+    .paso.completado .numero-paso {
+      background: var(--exito);
+      color: #fff;
+    }
+
+    .etiqueta-paso {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+    }
+
+    .paso.activo .etiqueta-paso {
+      color: var(--principal);
+    }
+
+
+    .caja-confirmacion {
+      max-width: 560px;
+      margin: 60px auto;
+      text-align: center;
+      background: #fff;
+      border-radius: 16px;
+      padding: 48px;
+      box-shadow: var(--sombra-fuerte);
+    }
+
+    .icono-confirmacion {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #e6f9ef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+      color: var(--exito);
+    }
+
+    .pedido-confirmacion {
+      background: var(--fondo);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--principal);
+      margin: 16px 0;
+    }
+
+
+    .contenedor-chat {
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 360px;
+    }
+
+    .mensajes-chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #fafbfc;
+    }
+
+    .mensaje {
+      max-width: 72%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .mensaje-bot {
+      background: var(--principal-claro);
+      color: var(--texto);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .mensaje-usuario {
+      background: var(--principal);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .fila-input-chat {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid var(--borde);
+    }
+
+    .fila-input-chat input {
+      flex: 1;
+      border: none;
+      padding: 12px 16px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .fila-input-chat button {
+      padding: 0 20px;
+      background: var(--principal);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+    }
+
+
+    .placeholder-mapa {
+      background: linear-gradient(135deg, #d0e8f7, #b8d9ef);
+      border-radius: var(--radio);
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: var(--principal);
+      border: 1px solid var(--borde);
+    }
+
+
+    .cuadricula-kpi {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi {
+      background: #fff;
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi::before {
+      content: '';
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--principal-claro);
+    }
+
+    .etiqueta-kpi {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+      margin-bottom: 6px;
+    }
+
+    .valor-kpi {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .subtexto-kpi {
+      font-size: 12px;
+      color: var(--exito);
+      margin-top: 4px;
+    }
+
+    .kpi-azul .valor-kpi {
+      color: var(--principal);
+    }
+
+    .kpi-verde .valor-kpi {
+      color: var(--exito);
+    }
+
+    .kpi-amarillo .valor-kpi {
+      color: var(--advertencia);
+    }
+
+    .kpi-rojo .valor-kpi {
+      color: var(--peligro);
+    }
+
+
+    .grafico-ejemplo {
+      background: var(--fondo);
+      border-radius: 8px;
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px 16px 0;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .barra {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      background: linear-gradient(to top, var(--principal), var(--verde-azulado));
+      opacity: .75;
+      transition: opacity .2s;
+    }
+
+    .barra:hover {
+      opacity: 1;
+    }
+
+
+    .contenido-legal {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .contenido-legal h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 28px 0 12px;
+      color: var(--principal-oscuro);
+    }
+
+    .contenido-legal p {
+      margin-bottom: 12px;
+      color: var(--texto-secundario);
+      line-height: 1.8;
+    }
+
+    .contenido-legal ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+      color: var(--texto-secundario);
+    }
+
+    .contenido-legal li {
+      margin-bottom: 6px;
+    }
+
+
+    .fila-pestanas {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .boton-pestana {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--borde);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .boton-pestana.activo,
+    .boton-pestana:hover {
+      background: var(--principal);
+      color: #fff;
+      border-color: var(--principal);
+    }
+
+
+    .contenedor-pagina {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 28px 32px;
+    }
+
+    .titulo-seccion {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--principal-oscuro);
+    }
+
+    .separador {
+      border: none;
+      border-top: 1px solid var(--borde);
+      margin: 20px 0;
+    }
+
+    .etiqueta {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .estado-vacio {
+      text-align: center;
+      padding: 48px;
+      color: var(--texto-secundario);
+    }
+
+    .estado-vacio .icono {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .paginacion {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .boton-pagina {
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+      border: 1.5px solid var(--borde);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-secundario);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .boton-pagina.activo {
+      background: var(--principal);
+      color: #fff;
+      border-color: var(--principal);
+    }
+
+    .grupo-input {
+      display: flex;
+      gap: 0;
+    }
+
+    .grupo-input .control-formulario {
+      border-radius: 8px 0 0 8px;
+    }
+
+    .grupo-input .btn {
+      border-radius: 0 8px 8px 0;
+    }
+
+
+    .migas-pan {
+      font-size: 12px;
+      color: var(--texto-secundario);
+    }
+
+    .migas-pan span {
+      color: var(--principal);
+      font-weight: 600;
+    }
+
+
+    .contenedor-interruptor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .interruptor {
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      background: var(--borde);
+      position: relative;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .interruptor.activo {
+      background: var(--principal);
+    }
+
+    .interruptor::after {
+      content: '';
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: left .2s;
+    }
+
+    .interruptor.activo::after {
+      left: 23px;
+    }
+
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--borde);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #bbb;
+    }
+
+
+    @media(max-width:900px) {
+      .dos-columnas {
+        flex-direction: column;
+      }
+
+      .barra-lateral-columna {
+        width: 100%;
+      }
+
+      .cuadricula-kpi,
+      .fila-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .encabezado {
+        padding: 0 16px;
+      }
+
+      .barra-promocional,
+      .navegacion-categorias {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .barra-lateral-admin {
+        display: none;
+      }
+
+      .contenedor-pagina {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <div id="VistaInicioSesion" class="vista activa">
+    <div class="pagina-autenticacion">
+      <div class="caja-autenticacion">
+        <div class="logo-autenticacion">
+          <div class="marca-logotipo">EL</div>
+          <h1>El Limpiecito</h1>
+          <p>Inicia sesión en tu cuenta</p>
+        </div>
+        <div class="grupo-formulario">
+          <label class="etiqueta-formulario">Correo electrónico</label>
+          <input id="loginEmail" class="control-formulario" type="email" placeholder="tu@correo.com">
+        </div>
+        <div class="grupo-formulario">
+          <label class="etiqueta-formulario">Contraseña</label>
+          <input id="loginPassword" class="control-formulario" type="password" placeholder="••••••••">
+          <div class="ayuda-formulario" style="text-align:right;margin-top:6px;">
+            <a href="#" onclick="mostrarVista('VistaRecuperacion')"
+              style="color:var(--principal);font-size:12px;">¿Olvidaste tu contraseña?</a>
+          </div>
+        </div>
+        <button class="btn btn-primario btn-completo btn-grande" onclick="hacerLogin()">Iniciar sesión</button>
+        <div class="divisor-autenticacion">o</div>
+        <button class="btn btn-borde btn-completo" onclick="mostrarVista('VistaRegistro')">Crear cuenta nueva</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaRegistro" class="vista">
+    <div class="pagina-autenticacion">
+      <div class="caja-autenticacion">
+        <div class="logo-autenticacion">
+          <div class="marca-logotipo">EL</div>
+          <h1>Crear cuenta</h1>
+          <p>Regístrate gratis en El Limpiecito</p>
+        </div>
+        <div class="fila-formulario">
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Nombre</label><input
+              class="control-formulario" placeholder="Juan"></div>
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Apellido</label><input
+              class="control-formulario" placeholder="García"></div>
+        </div>
+        <div class="grupo-formulario">
+          <label class="etiqueta-formulario">Correo electrónico</label>
+          <input class="control-formulario" type="email" placeholder="tu@correo.com">
+        </div>
+        <div class="grupo-formulario">
+          <label class="etiqueta-formulario">Contraseña <span
+              style="color:var(--texto-secundario);font-weight:400;">(mínimo 8 caracteres)</span></label>
+          <input class="control-formulario" type="password" placeholder="••••••••">
+        </div>
+        <div class="grupo-formulario">
+          <label class="etiqueta-formulario">Confirmar contraseña</label>
+          <input class="control-formulario" type="password" placeholder="••••••••">
+        </div>
+        <div class="grupo-formulario" style="display:flex;align-items:flex-start;gap:10px;">
+          <input type="checkbox" style="margin-top:3px;accent-color:var(--principal);">
+          <span style="font-size:12px;color:var(--texto-secundario);">Acepto los <a href="#"
+              onclick="mostrarVista('PaginaLegal')" style="color:var(--principal);">términos y política de
+              privacidad</a></span>
+        </div>
+        <button class="btn btn-acento btn-completo btn-grande">Crear cuenta</button>
+        <p style="text-align:center;font-size:13px;margin-top:16px;color:var(--texto-secundario);">¿Ya tienes cuenta? <a
+            href="#" onclick="mostrarVista('VistaInicioSesion')" style="color:var(--principal);font-weight:600;">Iniciar
+            sesión</a></p>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaRecuperacion" class="vista">
+    <div class="pagina-autenticacion">
+      <div class="caja-autenticacion">
+        <div class="logo-autenticacion">
+          <div class="marca-logotipo">EL</div>
+          <h1>Recuperar contraseña</h1>
+          <p>Te enviaremos un enlace a tu correo</p>
+        </div>
+        <div class="grupo-formulario">
+          <label class="etiqueta-formulario">Correo electrónico registrado</label>
+          <input class="control-formulario" type="email" placeholder="tu@correo.com">
+          <div class="ayuda-formulario">Recibirás un enlace válido por 30 minutos.</div>
+        </div>
+        <button class="btn btn-primario btn-completo btn-grande">Enviar enlace de recuperación</button>
+        <div style="text-align:center;margin-top:16px;">
+          <a href="#" onclick="mostrarVista('VistaInicioSesion')" style="color:var(--principal);font-size:13px;">Volver
+            al inicio de sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div id="PaginaInicio" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div>
+        El Limpiecito
+      </div>
+      <div class="buscador-principal">
+        <input type="text" placeholder="Buscar productos...">
+        <button onclick="mostrarVista('PaginaCatalogo')">Buscar</button>
+      </div>
+      <div class="navegacion-usuario">
+        <button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button>
+        <button class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito <span class="indicador-carrito"
+            id="indicadorCarrito">0</span></button>
+      </div>
+    </div>
+    <div class="barra-promocional">
+      <span>Nuevos clientes: 15% OFF con codigo LIMPIECITO15</span>
+      <span>Envio gratis en compras mayores a $500 MXN</span>
+    </div>
+
+    <!-- Hero -->
+    <div
+      style="background:linear-gradient(135deg,var(--principal-oscuro),var(--principal));color:#fff;padding:64px 32px;text-align:center;">
+      <h1 style="font-family:'Playfair Display',serif;font-size:42px;margin-bottom:12px;">Limpieza que da resultados
+      </h1>
+      <p style="font-size:16px;opacity:.85;max-width:520px;margin:0 auto 28px;">Productos de limpieza profesional para
+        el hogar y la industria. Calidad garantizada.</p>
+      <button class="btn btn-acento btn-grande" onclick="mostrarVista('PaginaCatalogo')">Ver catalogo completo</button>
+    </div>
+
+    <div class="navegacion-categorias">
+      <button class="activo" onclick="mostrarVista('PaginaCatalogo')">Todos</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Desinfectantes</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Lavandina</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Multiusos</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Pisos</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Quitagrasas</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Accesorios</button>
+      <button onclick="mostrarVista('PaginaCatalogo')">Ofertas</button>
+    </div>
+
+    <div class="contenedor-pagina">
+      <div class="titulo-seccion">Productos destacados</div>
+      <div class="cuadricula-productos" id="cuadriculaInicio"></div>
+
+      <div class="titulo-seccion" style="margin-top:36px;">Ofertas especiales</div>
+      <div class="cuadricula-productos" id="cuadriculaOfertas"></div>
+    </div>
+  </div>
+
+
+  <div id="PaginaCatalogo" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div>
+        El Limpiecito
+      </div>
+      <div class="buscador-principal">
+        <input type="text" placeholder="Buscar productos...">
+        <button>Buscar</button>
+      </div>
+      <div class="navegacion-usuario">
+        <button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button>
+        <button class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito <span
+            class="indicador-carrito">0</span></button>
+      </div>
+    </div>
+    <div class="navegacion-categorias">
+      <button class="activo">Todos</button>
+      <button>Desinfectantes</button><button>Lavandina</button><button>Multiusos</button>
+      <button>Pisos</button><button>Quitagrasas</button><button>Accesorios</button><button>Ofertas</button>
+    </div>
+
+    <div class="dos-columnas">
+      <div class="barra-lateral-columna">
+        <div class="tarjeta-filtro">
+          <div class="titulo-filtro">Categoria</div>
+          <div class="opciones-filtro">
+            <label class="opcion-filtro"><input type="checkbox" checked> Todos los productos</label>
+            <label class="opcion-filtro"><input type="checkbox"> Desinfectantes</label>
+            <label class="opcion-filtro"><input type="checkbox"> Lavandina</label>
+            <label class="opcion-filtro"><input type="checkbox"> Multiusos</label>
+            <label class="opcion-filtro"><input type="checkbox"> Pisos</label>
+            <label class="opcion-filtro"><input type="checkbox"> Accesorios</label>
+          </div>
+        </div>
+        <div class="tarjeta-filtro">
+          <div class="titulo-filtro">Rango de precio</div>
+          <input type="range" class="rango-precios" min="0" max="500" value="250">
+          <div class="etiquetas-precio"><span>$0</span><span>$500 MXN</span></div>
+        </div>
+        <div class="tarjeta-filtro">
+          <div class="titulo-filtro">Marca</div>
+          <div class="opciones-filtro">
+            <label class="opcion-filtro"><input type="checkbox"> El Limpiecito</label>
+            <label class="opcion-filtro"><input type="checkbox"> Cloralex</label>
+            <label class="opcion-filtro"><input type="checkbox"> Fabuloso</label>
+            <label class="opcion-filtro"><input type="checkbox"> Pinol</label>
+          </div>
+        </div>
+        <div class="tarjeta-filtro">
+          <div class="titulo-filtro">Calificacion</div>
+          <div class="opciones-filtro">
+            <label class="opcion-filtro"><input type="radio" name="rating"> 5 estrellas</label>
+            <label class="opcion-filtro"><input type="radio" name="rating"> 4 o mas</label>
+            <label class="opcion-filtro"><input type="radio" name="rating"> 3 o mas</label>
+          </div>
+        </div>
+        <button class="btn btn-primario btn-completo">Aplicar filtros</button>
+      </div>
+      <div class="columna-principal">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <span style="font-size:13px;color:var(--texto-secundario);">24 productos encontrados</span>
+          <select class="control-formulario" style="width:auto;padding:6px 12px;">
+            <option>Relevancia</option>
+            <option>Precio: menor a mayor</option>
+            <option>Precio: mayor a menor</option>
+            <option>Mas vendidos</option>
+            <option>Mas recientes</option>
+          </select>
+        </div>
+        <div class="cuadricula-productos" id="cuadriculaCatalogo"></div>
+        <div class="paginacion">
+          <div class="boton-pagina activo">1</div>
+          <div class="boton-pagina">2</div>
+          <div class="boton-pagina">3</div>
+          <div class="boton-pagina">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="PaginaProducto" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input type="text" placeholder="Buscar productos..."><button>Buscar</button></div>
+      <div class="navegacion-usuario">
+        <button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button>
+        <button class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito</button>
+      </div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="migas-pan" style="margin-bottom:16px;">
+        <a href="#" onclick="mostrarVista('PaginaInicio')">Inicio</a> / <a href="#"
+          onclick="mostrarVista('PaginaCatalogo')">Catalogo</a> / <span>Desinfectante Lavanda 1L</span>
+      </div>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;">
+        <div style="width:340px;flex-shrink:0;">
+          <div class="imagen-producto" style="height:280px;border-radius:var(--radio);font-size:80px;">
+            <span class="etiqueta-producto">Oferta</span>
+            &#x1F9F4;
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <div
+              style="width:60px;height:60px;background:var(--principal-claro);border-radius:8px;border:2px solid var(--principal);">
+            </div>
+            <div style="width:60px;height:60px;background:var(--principal-claro);border-radius:8px;"></div>
+            <div style="width:60px;height:60px;background:var(--principal-claro);border-radius:8px;"></div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:260px;">
+          <div class="insignia insignia-verde" style="margin-bottom:10px;">En stock</div>
+          <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Desinfectante Lavanda 1L</h1>
+          <div style="font-size:13px;color:var(--texto-secundario);margin-bottom:12px;">Marca: El Limpiecito
+            &nbsp;|&nbsp; SKU: EL-001</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <span style="font-size:11px;color:var(--acento);">★★★★★</span>
+            <span style="font-size:13px;color:var(--texto-secundario);">4.8 (127 resenas)</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:20px;">
+            <span style="font-size:32px;font-weight:700;color:var(--principal);">$89.00</span>
+            <span style="font-size:16px;color:var(--texto-secundario);text-decoration:line-through;">$110.00</span>
+            <span class="insignia insignia-roja">-19%</span>
+          </div>
+          <div style="font-size:12px;color:var(--texto-secundario);margin-bottom:20px;">$89.00 / litro</div>
+          <div class="grupo-formulario">
+            <label class="etiqueta-formulario">Cantidad</label>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button class="boton-cantidad">-</button>
+                <span style="font-size:16px;font-weight:600;">1</span>
+                <button class="boton-cantidad">+</button>
+              </div>
+              <span style="font-size:12px;color:var(--texto-secundario);">Disponible: 48 unidades</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-acento btn-grande" onclick="agregarAlCarrito();mostrarVista('VistaCarrito')">Agregar
+              al carrito</button>
+            <button class="btn btn-borde btn-grande">Guardar en favoritos</button>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:12px;">
+            <button class="btn btn-secundario btn-pequeno">Compartir</button>
+            <button class="btn btn-secundario btn-pequeno" onclick="alert('Abriendo dialogo de impresion...')">Imprimir
+              ficha</button>
+          </div>
+          <hr class="separador">
+          <div>
+            <div style="font-weight:700;margin-bottom:8px;">Descripcion</div>
+            <p style="font-size:13px;color:var(--texto-secundario);">Desinfectante de uso general con fragancia a
+              lavanda. Elimina el 99.9% de germenes y bacterias. Apto para superficies del hogar. Rendimiento: hasta 50L
+              diluido.</p>
+          </div>
+          <hr class="separador">
+          <div>
+            <div style="font-weight:700;margin-bottom:8px;">Composicion</div>
+            <p style="font-size:13px;color:var(--texto-secundario);">Agua, Alkyl polyglucoside, Fragancia sintetica
+              (lavanda), Conservante: Benzisothiazolinone. <strong>Sin cloro.</strong></p>
+          </div>
+          <hr class="separador">
+          <div style="display:flex;gap:16px;">
+            <div style="font-size:13px;color:var(--exito);">&#10003; Envio gratis (+$500)</div>
+            <div style="font-size:13px;color:var(--texto-secundario);">&#128337; Entrega 2-4 dias</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:40px;">
+        <div class="titulo-seccion">Productos relacionados</div>
+        <div class="cuadricula-productos" id="cuadriculaRelacionados"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaPerfil" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input type="text" placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario">
+        <button onclick="mostrarVista('VistaInicioSesion')">Cerrar sesion</button>
+        <button class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito</button>
+      </div>
+    </div>
+    <div class="encabezado-perfil">
+      <div class="avatar" id="perfilAvatarHeader">U</div>
+      <div>
+        <h2 id="perfilNombreHeader" style="font-size:20px;font-weight:700;">Cargando...</h2>
+        <div id="perfilEmailHeader" style="opacity:.8;font-size:13px;">...</div>
+        <div style="margin-top:6px;"><span class="insignia insignia-amarilla">Cliente Frecuente</span></div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:10px;">
+        <button class="btn btn-borde" style="color:#fff;border-color:rgba(255,255,255,.5);"
+          onclick="mostrarVista('VistaHistorial')">Mis pedidos</button>
+        <button class="btn btn-acento" onclick="mostrarVista('PaginaCatalogo')">Seguir comprando</button>
+      </div>
+    </div>
+    <div class="pestanas-perfil">
+      <button class="pestana-perfil activo" onclick="mostrarPestanaPerfil('pestana-info',this)">Informacion
+        personal</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaDirecciones')">Direcciones</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSeguridad')">Seguridad</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaHistorial')">Historial</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSoporte')">Soporte</button>
+    </div>
+    <div class="contenedor-pagina">
+      <div id="pestana-info">
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+          <div class="tarjeta" style="flex:1;min-width:280px;">
+            <div class="titulo-tarjeta">Informacion personal</div>
+            <div class="fila-formulario">
+              <div class="grupo-formulario"><label class="etiqueta-formulario">Nombre</label><input
+                  id="perfilInputNombre" class="control-formulario" value=""></div>
+              <div class="grupo-formulario"><label class="etiqueta-formulario">Apellido</label><input
+                  id="perfilInputApellido" class="control-formulario" value=""></div>
+            </div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Correo electronico</label><input
+                id="perfilInputEmail" class="control-formulario" type="email" value="" disabled></div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Telefono</label><input
+                id="perfilInputTelefono" class="control-formulario" value=""></div>
+            <div class="grupo-formulario">
+              <label class="etiqueta-formulario">Foto de perfil</label>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="avatar" id="perfilAvatarFoto" style="width:52px;height:52px;font-size:18px;">U</div>
+                <button class="btn btn-borde btn-pequeno">Cambiar foto</button>
+              </div>
+              <div class="ayuda-formulario">Formatos: JPG, PNG, WEBP. Maximo 5MB.</div>
+            </div>
+            <button class="btn btn-primario">Guardar cambios</button>
+          </div>
+          <div class="tarjeta" style="flex:0 0 280px;">
+            <div class="titulo-tarjeta">Mi nivel de cliente</div>
+            <div style="text-align:center;padding:12px 0;">
+              <div style="font-size:40px;margin-bottom:8px;">&#11088;</div>
+              <div style="font-size:18px;font-weight:700;color:var(--principal);">Cliente Frecuente</div>
+              <div style="font-size:13px;color:var(--texto-secundario);margin:8px 0;">Progreso hacia Premium</div>
+              <div style="background:var(--borde);border-radius:20px;height:8px;overflow:hidden;">
+                <div
+                  style="width:65%;height:100%;background:linear-gradient(to right,var(--principal),var(--verde-azulado));border-radius:20px;">
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--texto-secundario);margin-top:6px;">650 / 1000 puntos</div>
+            </div>
+            <hr class="separador">
+            <div style="font-size:13px;">
+              <div style="font-weight:600;margin-bottom:8px;">Beneficios actuales:</div>
+              <div style="display:flex;flex-direction:column;gap:6px;color:var(--texto-secundario);">
+                <div>&#10003; 5% descuento en productos seleccionados</div>
+                <div>&#10003; Prioridad en soporte</div>
+                <div>&#10003; Acceso a ofertas exclusivas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaDirecciones" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button><button
+          class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito</button></div>
+    </div>
+    <div class="encabezado-perfil">
+      <div class="avatar">JG</div>
+      <div>
+        <h2 style="font-size:20px;font-weight:700;">Juan Garcia</h2>
+      </div>
+    </div>
+    <div class="pestanas-perfil">
+      <button class="pestana-perfil" onclick="mostrarVista('VistaPerfil')">Informacion personal</button>
+      <button class="pestana-perfil activo">Direcciones</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSeguridad')">Seguridad</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaHistorial')">Historial</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSoporte')">Soporte</button>
+    </div>
+    <div class="contenedor-pagina">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div class="titulo-seccion" style="margin:0;">Mis direcciones de envio</div>
+        <button class="btn btn-primario">+ Agregar direccion</button>
+      </div>
+      <div id="contenedorDireccionesCliente" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+        <div style="grid-column: 1 / -1; text-align:center;padding:40px;color:var(--texto-secundario);">Cargando tus direcciones...</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaSeguridad" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button><button
+          class="btn-acento">Carrito</button></div>
+    </div>
+    <div class="encabezado-perfil">
+      <div class="avatar">JG</div>
+      <div>
+        <h2 style="font-size:20px;font-weight:700;">Juan Garcia</h2>
+      </div>
+    </div>
+    <div class="pestanas-perfil">
+      <button class="pestana-perfil" onclick="mostrarVista('VistaPerfil')">Informacion personal</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaDirecciones')">Direcciones</button>
+      <button class="pestana-perfil activo">Seguridad</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaHistorial')">Historial</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSoporte')">Soporte</button>
+    </div>
+    <div class="contenedor-pagina">
+      <div style="max-width:560px;">
+        <div class="tarjeta">
+          <div class="titulo-tarjeta">Cambiar contrasena</div>
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Contrasena actual</label><input
+              class="control-formulario" type="password" placeholder="••••••••"></div>
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Nueva contrasena</label><input
+              class="control-formulario" type="password" placeholder="••••••••">
+            <div class="ayuda-formulario">Minimo 8 caracteres.</div>
+          </div>
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Confirmar nueva contrasena</label><input
+              class="control-formulario" type="password" placeholder="••••••••"></div>
+          <button class="btn btn-primario">Actualizar contrasena</button>
+        </div>
+        <div class="tarjeta" style="border-color:var(--peligro);">
+          <div class="titulo-tarjeta" style="color:var(--peligro);">Zona de peligro</div>
+          <p style="font-size:13px;color:var(--texto-secundario);margin-bottom:16px;">Al eliminar tu cuenta se borraran
+            todos tus datos personales. Tus pedidos historicos seran anonimizados. Esta accion no se puede deshacer.</p>
+          <button class="btn btn-peligro"
+            onclick="if(confirm('Esta accion eliminara tu cuenta permanentemente. ¿Continuar?'))alert('Cuenta eliminada')">Eliminar
+            mi cuenta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaHistorial" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button><button
+          class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito</button></div>
+    </div>
+    <div class="encabezado-perfil">
+      <div class="avatar">JG</div>
+      <div>
+        <h2 style="font-size:20px;font-weight:700;">Juan Garcia</h2>
+      </div>
+    </div>
+    <div class="pestanas-perfil">
+      <button class="pestana-perfil" onclick="mostrarVista('VistaPerfil')">Informacion personal</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaDirecciones')">Direcciones</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSeguridad')">Seguridad</button>
+      <button class="pestana-perfil activo">Historial</button>
+      <button class="pestana-perfil" onclick="mostrarVista('VistaSoporte')">Soporte</button>
+    </div>
+    <div class="contenedor-pagina">
+      <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
+        <div class="titulo-seccion" style="margin:0;">Mis pedidos</div>
+        <div style="display:flex;gap:8px;">
+          <select class="control-formulario" style="width:auto;padding:6px 12px;font-size:13px;">
+            <option>Todos los estados</option>
+            <option>Pendiente</option>
+            <option>En camino</option>
+            <option>Entregado</option>
+          </select>
+          <input class="control-formulario" type="text" placeholder="Buscar por # pedido" style="width:200px;">
+        </div>
+      </div>
+      <div id="contenedorPedidosCliente">
+        <div style="text-align:center;padding:40px;color:var(--texto-secundario);">Cargando tus pedidos...</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaCarrito" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button><button
+          class="btn-acento">Carrito <span class="indicador-carrito" id="indicadorCarrito2">2</span></button></div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="titulo-seccion">Mi carrito</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:300px;">
+          <div class="tarjeta" id="contenedorItemsCarrito">
+            <div style="text-align:center;padding:40px;color:var(--texto-secundario);">Cargando tu carrito...</div>
+          </div>
+        </div>
+        <div style="width:300px;flex-shrink:0;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Resumen de compra</div>
+            <div class="resumen-pedido" id="resumenTotalesCarrito">
+              <div class="fila-resumen"><span>Subtotal</span><span>$0.00</span></div>
+              <div class="fila-resumen total"><span>Total</span><span>$0.00</span></div>
+            </div>
+            <button class="btn btn-acento btn-completo btn-grande" style="margin-top:16px;"
+              onclick="mostrarVista('VistaPago')">Ir a pagar</button>
+            <button class="btn btn-secundario btn-completo" style="margin-top:8px;"
+              onclick="mostrarVista('PaginaCatalogo')">Seguir comprando</button>
+          </div>
+          <div style="font-size:12px;color:var(--texto-secundario);text-align:center;margin-top:8px;">
+            Pago 100% seguro. SSL cifrado.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaPago" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaCarrito')">← Volver al carrito</button></div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="titulo-seccion">Finalizar compra</div>
+      <div class="pasos">
+        <div class="paso completado">
+          <div class="numero-paso">1</div>
+          <div class="etiqueta-paso">Carrito</div>
+        </div>
+        <div class="paso activo">
+          <div class="numero-paso">2</div>
+          <div class="etiqueta-paso">Envio</div>
+        </div>
+        <div class="paso">
+          <div class="numero-paso">3</div>
+          <div class="etiqueta-paso">Pago</div>
+        </div>
+        <div class="paso">
+          <div class="numero-paso">4</div>
+          <div class="etiqueta-paso">Confirmacion</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:300px;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Direccion de envio</div>
+            <div class="grupo-formulario">
+              <label class="etiqueta-formulario">Selecciona tu direccion</label>
+              <select id="pagoSelectDireccion" class="control-formulario">
+                <option value="">Cargando direcciones...</option>
+              </select>
+            </div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Notas especiales <span
+                  style="font-weight:400;color:var(--texto-secundario);">(opcional, max 200
+                  caracteres)</span></label><textarea id="pagoNotas" class="control-formulario" rows="2"
+                placeholder="Ej: Dejar con el portero..."></textarea></div>
+          </div>
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Metodo de pago</div>
+            <div class="fila-pestanas">
+              <button class="boton-pestana activo">Tarjeta</button>
+              <button class="boton-pestana">Transferencia</button>
+              <button class="boton-pestana">Efectivo</button>
+            </div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Numero de tarjeta</label><input
+                class="control-formulario" placeholder="1234 5678 9012 3456"></div>
+            <div class="fila-formulario">
+              <div class="grupo-formulario"><label class="etiqueta-formulario">Vencimiento</label><input
+                  class="control-formulario" placeholder="MM/AA"></div>
+              <div class="grupo-formulario"><label class="etiqueta-formulario">CVV</label><input
+                  class="control-formulario" placeholder="123"></div>
+            </div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Nombre en tarjeta</label><input
+                class="control-formulario" placeholder="JUAN GARCIA"></div>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--principal);"> Guardar tarjeta para futuras compras
+            </label>
+          </div>
+        </div>
+        <div style="width:300px;flex-shrink:0;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Resumen del pedido</div>
+            <div id="pagoItemsResumen" style="font-size:13px;"></div>
+            <div class="resumen-pedido" id="pagoTotalesResumen" style="margin-top:12px;"></div>
+            <button id="btnConfirmarPago" class="btn btn-acento btn-completo btn-grande" style="margin-top:16px;"
+              onclick="procesarPago()">Confirmar y pagar</button>
+            <div style="font-size:11px;color:var(--texto-secundario);text-align:center;margin-top:8px;">Al confirmar
+              aceptas los terminos de compra</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaConfirmacion" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="navegacion-usuario"><button class="btn-acento" onclick="mostrarVista('PaginaInicio')">Seguir
+          comprando</button></div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="caja-confirmacion">
+        <div class="icono-confirmacion">✓</div>
+        <h2 style="font-size:24px;font-weight:700;margin-bottom:8px;">Compra confirmada</h2>
+        <p style="color:var(--texto-secundario);font-size:14px;">Gracias por tu compra. Recibirás una confirmación a tu
+          correo electrónico.</p>
+        <div class="pedido-confirmacion" id="confNumeroPedido">ORD-CARGANDO</div>
+        <div style="font-size:13px;color:var(--texto-secundario);margin-bottom:24px;">Fecha: <strong id="confFecha">...</strong></div>
+        <div
+          style="background:var(--fondo);border-radius:8px;padding:16px;font-size:13px;text-align:left;margin-bottom:24px;">
+          <div style="font-weight:700;margin-bottom:10px;">Detalle del pedido</div>
+          <div id="confItems"></div>
+          <div
+            style="display:flex;justify-content:space-between;padding:8px 0 0;border-top:1px solid var(--borde);margin-top:8px;font-weight:700;">
+            <span>Total pagado</span><span style="color:var(--principal);" id="confTotal">$0.00</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-primario" onclick="mostrarVista('VistaHistorial')">Ver estado del pedido</button>
+          <button class="btn btn-borde" onclick="alert('Recomprobante enviado a tu correo')">Reenviar
+            comprobante</button>
+          <button class="btn btn-secundario" onclick="mostrarVista('PaginaInicio')">Volver al inicio</button>
+        </div>
+        <div style="margin-top:24px;background:var(--principal-claro);border-radius:8px;padding:12px;font-size:13px;">
+          <strong>Productos sugeridos para tu proxima compra:</strong>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <button class="btn btn-borde btn-pequeno" onclick="mostrarVista('PaginaProducto')">Quitagrasas
+              Industrial</button>
+            <button class="btn btn-borde btn-pequeno" onclick="mostrarVista('PaginaProducto')">Lavandina 2L</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="VistaSoporte" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button><button
+          class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito</button></div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="titulo-seccion">Soporte al cliente</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:300px;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Mis tickets</div>
+            <div style="background:var(--fondo);border-radius:8px;padding:14px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-weight:600;font-size:13px;">#TKT-00142 - Consulta sobre pedido</div>
+                  <div style="font-size:11px;color:var(--texto-secundario);">Abierto hace 2 dias</div>
+                </div>
+                <span class="insignia insignia-amarilla">En revision</span>
+              </div>
+            </div>
+            <div class="contenedor-chat" style="margin-top:4px;">
+              <div class="mensajes-chat">
+                <div class="mensaje mensaje-bot"><strong>Soporte El Limpiecito:</strong> Hola Juan, ¿en que te podemos
+                  ayudar?</div>
+                <div class="mensaje mensaje-usuario">Hola, tengo una consulta sobre mi pedido #ORD-2026-0031</div>
+                <div class="mensaje mensaje-bot"><strong>Soporte:</strong> Claro, estoy revisando tu pedido. Dame un
+                  momento.</div>
+                <div class="mensaje mensaje-bot"><strong>Soporte:</strong> Tu pedido esta en transito y llegara en 1-2
+                  dias habiles.</div>
+              </div>
+              <div class="fila-input-chat">
+                <input type="text" placeholder="Escribe tu mensaje...">
+                <button>Enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:300px;flex-shrink:0;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Nuevo ticket</div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Asunto</label><select
+                class="control-formulario">
+                <option>Selecciona...</option>
+                <option>Consulta sobre pedido</option>
+                <option>Problema con producto</option>
+                <option>Devolucion/Reembolso</option>
+                <option>Otro</option>
+              </select></div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Mensaje</label><textarea
+                class="control-formulario" rows="4" placeholder="Describe tu consulta detalladamente..."></textarea>
+            </div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Adjuntar imagen (opcional)</label><input
+                type="file" class="control-formulario" accept="image/*"></div>
+            <button class="btn btn-primario btn-completo">Abrir ticket</button>
+          </div>
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Canales de contacto</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+              <div><strong>Telefono:</strong> <span style="color:var(--texto-secundario);">55 1234 5678</span></div>
+              <div><strong>Email:</strong> <span style="color:var(--texto-secundario);">contacto@ellimpiecito.mx</span>
+              </div>
+              <div><strong>Horario:</strong> <span style="color:var(--texto-secundario);">Lun-Vie 9:00 - 18:00</span>
+              </div>
+              <button class="btn btn-borde btn-pequeno" onclick="mostrarVista('VistaContacto')">Ver formulario de
+                contacto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="VistaContacto" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo"></div> El Limpiecito
+      </div>
+      <div class="buscador-principal"><input placeholder="Buscar..."><button>Buscar</button></div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaPerfil')">Mi cuenta</button><button
+          class="btn-acento" onclick="mostrarVista('VistaCarrito')">Carrito</button></div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="titulo-seccion">Contactanos</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div class="tarjeta" style="flex:1;min-width:300px;">
+          <div class="titulo-tarjeta">Formulario de contacto</div>
+          <div class="fila-formulario">
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Nombre</label><input
+                class="control-formulario" placeholder="Tu nombre"></div>
+            <div class="grupo-formulario"><label class="etiqueta-formulario">Correo</label><input
+                class="control-formulario" type="email" placeholder="tu@correo.com"></div>
+          </div>
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Asunto</label><input
+              class="control-formulario" placeholder="¿En que podemos ayudarte?"></div>
+          <div class="grupo-formulario"><label class="etiqueta-formulario">Mensaje</label><textarea
+              class="control-formulario" rows="5" placeholder="Escribe tu mensaje..."></textarea></div>
+          <button class="btn btn-primario" onclick="alert('Mensaje enviado. Te contactaremos pronto.')">Enviar
+            mensaje</button>
+        </div>
+        <div style="width:320px;flex-shrink:0;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Nuestra ubicacion</div>
+            <div class="placeholder-mapa">&#128205;</div>
+            <div style="margin-top:12px;font-size:13px;">
+              <div style="font-weight:600;">El Limpiecito</div>
+              <div style="color:var(--texto-secundario);margin-top:4px;">Puebla 16, Col. Guadalupe<br>99310 Jerez de García Salinas, Zac.</div>
+              <button class="btn btn-borde btn-pequeno" style="margin-top:10px;"
+                onclick="mostrarVista('PaginaMapa')">Abrir mapa interactivo</button>
+            </div>
+          </div>
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Información de contacto</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+              <div><strong>Tel:</strong> <span style="color:var(--texto-secundario);">494 945 6539</span></div>
+              <div><strong>Email:</strong> <span style="color:var(--texto-secundario);">contacto@ellimpiecito.com</span></div>
+              <div><strong>Horario de atención:</strong> <span style="color:var(--texto-secundario);">Todos los días de 9:00am a 3:00pm</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="PaginaLegal" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaInicioSesion')">Iniciar sesion</button><button
+          class="btn-acento" onclick="mostrarVista('VistaRegistro')">Registrarse</button></div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="contenido-legal">
+        <div class="fila-pestanas">
+          <button class="boton-pestana activo">Politica de privacidad</button>
+          <button class="boton-pestana">Terminos y condiciones</button>
+          <button class="boton-pestana">Politica de envios</button>
+          <button class="boton-pestana">Politica de devoluciones</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <div style="font-size:12px;color:var(--texto-secundario);">Ultima actualizacion: 01 enero 2026</div>
+          <button class="btn btn-borde btn-pequeno" onclick="alert('Descargando PDF...')">Descargar PDF</button>
+        </div>
+        <h2>Politica de Privacidad</h2>
+        <p>En El Limpiecito, nos comprometemos a proteger su informacion personal. Esta politica describe como
+          recopilamos, usamos y protegemos sus datos de acuerdo con la legislacion mexicana vigente (LFPDPPP).</p>
+        <h2>1. Informacion que recopilamos</h2>
+        <p>Recopilamos informacion que usted nos proporciona directamente al crear una cuenta, realizar una compra o
+          contactarnos:</p>
+        <ul>
+          <li>Nombre y apellidos</li>
+          <li>Correo electronico y telefono</li>
+          <li>Direcciones de envio y facturacion</li>
+          <li>Historial de compras y preferencias</li>
+        </ul>
+        <h2>2. Uso de la informacion</h2>
+        <p>Utilizamos su informacion para procesar pedidos, brindar servicio al cliente, enviar notificaciones sobre su
+          cuenta y mejorar nuestros servicios. No vendemos ni compartimos sus datos con terceros sin su consentimiento.
+        </p>
+        <h2>3. Seguridad</h2>
+        <p>Implementamos medidas de seguridad tecnicas y administrativas para proteger su informacion, incluyendo
+          cifrado SSL, encriptacion de contrasenas y acceso restringido a datos sensibles.</p>
+        <h2>4. Sus derechos (ARCO)</h2>
+        <p>Usted tiene derechos de Acceso, Rectificacion, Cancelacion y Oposicion sobre sus datos. Para ejercerlos,
+          contactenos en: privacidad@ellimpiecito.mx</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="PaginaMapa" class="vista">
+    <div class="encabezado">
+      <div class="logo-empresa" onclick="mostrarVista('PaginaInicio')">
+        <div class="marca-logotipo">EL</div> El Limpiecito
+      </div>
+      <div class="navegacion-usuario"><button onclick="mostrarVista('VistaContacto')">← Volver al contacto</button>
+      </div>
+    </div>
+    <div class="contenedor-pagina">
+      <div class="titulo-seccion">Nuestra ubicacion</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;">
+          <div class="placeholder-mapa" style="height:420px;">
+            <div style="text-align:center;">
+              <div style="font-size:56px;margin-bottom:12px;">&#128205;</div>
+              <div style="font-size:16px;font-weight:600;color:var(--principal-oscuro);">El Limpiecito</div>
+              <div style="font-size:13px;color:var(--texto-secundario);margin-top:6px;">Puebla 16, Col. Guadalupe, 99310 Jerez de García Salinas, Zac.
+              </div>
+              <a href="https://maps.google.com" target="_blank" class="btn btn-primario"
+                style="margin-top:16px;display:inline-flex;">Abrir en Google Maps</a>
+            </div>
+          </div>
+        </div>
+        <div style="width:280px;flex-shrink:0;">
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Como llegar</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:12px;">
+              <div><strong>En auto:</strong><br><span style="color:var(--texto-secundario);">Desde el centro tomar Blvd.
+                  Zacatecas hacia el norte, 10 minutos.</span></div>
+              <div><strong>En transporte:</strong><br><span style="color:var(--texto-secundario);">Rutas 5 y 12 pasan a
+                  2 cuadras del local.</span></div>
+              <div><strong>Estacionamiento:</strong><br><span style="color:var(--texto-secundario);">Estacionamiento
+                  gratuito disponible en el local.</span></div>
+            </div>
+          </div>
+          <div class="tarjeta">
+            <div class="titulo-tarjeta">Horarios</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;"><span>Lunes - Viernes</span><span
+                  style="font-weight:600;">9:00 - 18:00</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Sabado</span><span
+                  style="font-weight:600;">9:00 - 13:00</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Domingo</span><span
+                  style="color:var(--peligro);">Cerrado</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="__vistasAdmin">
+
+
+    <div id="PanelControl" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin" id="barraLateral1">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="grupo-menu">
+              <div class="etiqueta-grupo">Principal</div>
+              <div class="opcion-menu activo" onclick="mostrarVista('PanelControl')"><span
+                  class="icono-menu">&#9646;</span> Tablero</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')"><span class="icono-menu">&#128230;</span>
+                Pedidos</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelProductos')"><span
+                  class="icono-menu">&#128722;</span> Productos</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelClientes')"><span class="icono-menu">&#128101;</span>
+                Clientes</div>
+            </div>
+            <div class="grupo-menu">
+              <div class="etiqueta-grupo">Finanzas</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelReportes')"><span class="icono-menu">&#128202;</span>
+                Reportes</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelCupones')"><span class="icono-menu">&#127991;</span>
+                Cupones</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')"><span
+                  class="icono-menu">&#127383;</span> Promociones</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')"><span class="icono-menu">&#36;</span>
+                Precios</div>
+            </div>
+            <div class="grupo-menu">
+              <div class="etiqueta-grupo">Operacion</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelInventario')"><span
+                  class="icono-menu">&#128218;</span> Inventario</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')"><span
+                  class="icono-menu">&#128666;</span> Proveedores</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')"><span
+                  class="icono-menu">&#128272;</span> Administradores</div>
+              <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')"><span
+                  class="icono-menu">&#9881;</span> Mantenimiento</div>
+            </div>
+          </div>
+          <div style="padding:16px;border-top:1px solid rgba(255,255,255,.1);">
+            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px;">Admin logueado:</div>
+            <div id="adminNombreSidebar" style="font-size:13px;color:#fff;font-weight:600;">Administrador</div>
+            <button class="btn btn-secundario btn-pequeno"
+              style="margin-top:8px;color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);width:100%;"
+              onclick="cerrarSesion()">Cerrar sesion</button>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Tablero</span></div>
+              <h2>Tablero</h2>
+            </div>
+            <div style="font-size:13px;color:var(--texto-secundario);">Hoy: lunes 23 de marzo 2026</div>
+          </div>
+          <div class="area-contenido-admin">
+            <div class="cuadricula-kpi">
+              <div class="kpi kpi-azul">
+                <div class="etiqueta-kpi">Ventas hoy</div>
+                <div class="valor-kpi" id="dashVentasHoy">$0</div>
+                <div class="subtexto-kpi" id="dashPedidosHoy">0 pedidos hoy</div>
+              </div>
+              <div class="kpi kpi-verde">
+                <div class="etiqueta-kpi">Pedidos pendientes</div>
+                <div class="valor-kpi" id="dashPedidosPendientes">0</div>
+                <div class="subtexto-kpi">Requieren atención</div>
+              </div>
+              <div class="kpi kpi-amarillo">
+                <div class="etiqueta-kpi">Stock bajo</div>
+                <div class="valor-kpi" id="dashStockBajo">0</div>
+                <div class="subtexto-kpi">Productos por reponer</div>
+              </div>
+              <div class="kpi kpi-rojo">
+                <div class="etiqueta-kpi">Total clientes</div>
+                <div class="valor-kpi" id="dashTotalClientes">0</div>
+                <div class="subtexto-kpi">Registrados en la tienda</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div class="tarjeta" style="flex:2;min-width:280px;">
+                <div class="titulo-tarjeta">Ventas por dia (marzo 2026)</div>
+                <div class="grafico-ejemplo">
+                  <div class="barra" style="height:60%;"></div>
+                  <div class="barra" style="height:80%;"></div>
+                  <div class="barra" style="height:45%;"></div>
+                  <div class="barra" style="height:90%;"></div>
+                  <div class="barra" style="height:70%;"></div>
+                  <div class="barra" style="height:55%;"></div>
+                  <div class="barra" style="height:100%;"></div>
+                  <div class="barra" style="height:75%;"></div>
+                  <div class="barra" style="height:65%;"></div>
+                  <div class="barra" style="height:85%;"></div>
+                  <div class="barra" style="height:50%;"></div>
+                  <div class="barra" style="height:95%;"></div>
+                </div>
+              </div>
+              <div class="tarjeta" style="flex:1;min-width:220px;">
+                <div class="titulo-tarjeta">Pedidos recientes</div>
+                <div id="dashPedidosRecientes" style="font-size:13px;">
+                  <div style="color:var(--texto-secundario);text-align:center;padding:20px 0;">Cargando pedidos...</div>
+                </div>
+                <button class="btn btn-borde btn-pequeno btn-completo" style="margin-top:12px;"
+                  onclick="mostrarVista('PanelPedidos')">Ver todos los pedidos</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelPedidos" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')"><span>&#9646;</span> Tablero</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelPedidos')"><span>&#128230;</span> Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')"><span>&#128722;</span> Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')"><span>&#128101;</span> Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')"><span>&#128202;</span> Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')"><span>&#127991;</span> Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')"><span>&#127383;</span> Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')"><span>&#36;</span> Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')"><span>&#128218;</span> Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')"><span>&#128666;</span> Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')"><span>&#128272;</span> Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')"><span>&#9881;</span> Mantenimiento
+            </div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Pedidos</span></div>
+              <h2>Gestion de pedidos</h2>
+            </div>
+            <button class="btn btn-borde btn-pequeno">Exportar Excel</button>
+          </div>
+          <div class="area-contenido-admin">
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+              <input class="control-formulario" style="width:220px;" placeholder="Buscar por # pedido o cliente">
+              <select class="control-formulario" style="width:auto;">
+                <option>Todos los estados</option>
+                <option>Pendiente</option>
+                <option>En preparacion</option>
+                <option>Enviado</option>
+                <option>Entregado</option>
+                <option>Cancelado</option>
+              </select>
+              <input class="control-formulario" type="date" style="width:auto;">
+              <input class="control-formulario" type="date" style="width:auto;">
+              <button class="btn btn-primario btn-pequeno">Filtrar</button>
+            </div>
+            <div class="tarjeta" style="padding:0;overflow:hidden;">
+              <div class="contenedor-tabla">
+                <table>
+                  <thead>
+                    <tr>
+                      <th># Pedido</th>
+                      <th>Cliente</th>
+                      <th>Fecha</th>
+                      <th>Productos</th>
+                      <th>Total</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaPedidosAdmin">
+                    <tr>
+                      <td style="font-weight:600;">#ORD-0043</td>
+                      <td>Juan Garcia</td>
+                      <td>23/03/2026</td>
+                      <td>3 items</td>
+                      <td>$243.54</td>
+                      <td><span class="insignia insignia-amarilla">Pendiente</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver</button> <select
+                          style="font-size:12px;padding:4px;border-radius:6px;border:1px solid var(--borde);">
+                          <option>Cambiar estado</option>
+                          <option>En preparacion</option>
+                          <option>Enviado</option>
+                          <option>Entregado</option>
+                          <option>Cancelado</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600;">#ORD-0042</td>
+                      <td>Maria Lopez</td>
+                      <td>22/03/2026</td>
+                      <td>1 item</td>
+                      <td>$89.00</td>
+                      <td><span class="insignia insignia-azul">Enviado</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600;">#ORD-0041</td>
+                      <td>Pedro Ruiz</td>
+                      <td>21/03/2026</td>
+                      <td>5 items</td>
+                      <td>$480.00</td>
+                      <td><span class="insignia insignia-verde">Entregado</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:600;">#ORD-0040</td>
+                      <td>Ana Torres</td>
+                      <td>20/03/2026</td>
+                      <td>2 items</td>
+                      <td>$158.00</td>
+                      <td><span class="insignia insignia-gris">Cancelado</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="paginacion">
+              <div class="boton-pagina activo">1</div>
+              <div class="boton-pagina">2</div>
+              <div class="boton-pagina">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelProductos" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">&#9646; Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">&#128230; Pedidos</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelProductos')">&#128722; Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">&#128101; Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">&#128202; Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">&#128218; Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">&#127991; Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">&#127383; Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">&#36; Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">&#128666; Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">&#128272; Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">&#9881; Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Productos</span></div>
+              <h2>Catalogo de productos</h2>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-borde btn-pequeno">Exportar</button>
+              <button class="btn btn-primario btn-pequeno" onclick="alert('Formulario: nuevo producto')">+ Agregar
+                producto</button>
+            </div>
+          </div>
+          <div class="area-contenido-admin">
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+              <input class="control-formulario" style="width:240px;" placeholder="Buscar por nombre o SKU">
+              <select class="control-formulario" style="width:auto;">
+                <option>Todas las categorias</option>
+                <option>Desinfectantes</option>
+                <option>Lavandina</option>
+                <option>Accesorios</option>
+              </select>
+              <button class="btn btn-primario btn-pequeno">Buscar</button>
+            </div>
+            <div class="tarjeta" style="padding:0;overflow:hidden;">
+              <div class="contenedor-tabla">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Producto</th>
+                      <th>Categoria</th>
+                      <th>Precio</th>
+                      <th>Stock</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaProductosAdmin">
+                    <tr>
+                      <td>EL-001</td>
+                      <td>
+                        <div style="font-weight:600;">Desinfectante Lavanda 1L</div>
+                        <div style="font-size:11px;color:var(--texto-secundario);">El Limpiecito</div>
+                      </td>
+                      <td>Desinfectantes</td>
+                      <td>$89.00</td>
+                      <td>48</td>
+                      <td><span class="insignia insignia-verde">Visible</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Editar</button> <button
+                          class="btn btn-secundario btn-pequeno">Ocultar</button></td>
+                    </tr>
+                    <tr>
+                      <td>EL-002</td>
+                      <td>
+                        <div style="font-weight:600;">Quitagrasas Industrial 750ml</div>
+                      </td>
+                      <td>Quitagrasas</td>
+                      <td>$125.00</td>
+                      <td>0</td>
+                      <td><span class="insignia insignia-roja">Agotado</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Editar</button> <button
+                          class="btn btn-secundario btn-pequeno">Ocultar</button></td>
+                    </tr>
+                    <tr>
+                      <td>EL-003</td>
+                      <td>
+                        <div style="font-weight:600;">Pano microfibra x3</div>
+                      </td>
+                      <td>Accesorios</td>
+                      <td>$55.00</td>
+                      <td>120</td>
+                      <td><span class="insignia insignia-verde">Visible</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Editar</button> <button
+                          class="btn btn-secundario btn-pequeno">Ocultar</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelClientes" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Clientes</span></div>
+              <h2>Gestion de clientes</h2>
+            </div>
+          </div>
+          <div class="area-contenido-admin">
+            <div style="display:flex;gap:10px;margin-bottom:16px;">
+              <input class="control-formulario" style="width:260px;" placeholder="Buscar por nombre, email o telefono">
+              <select class="control-formulario" style="width:auto;">
+                <option>Todos los niveles</option>
+                <option>Nuevo</option>
+                <option>Frecuente</option>
+                <option>Premium</option>
+              </select>
+              <button class="btn btn-primario btn-pequeno">Buscar</button>
+            </div>
+            <div class="tarjeta" style="padding:0;overflow:hidden;">
+              <div class="contenedor-tabla">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Email</th>
+                      <th>Telefono</th>
+                      <th>Nivel</th>
+                      <th>Pedidos</th>
+                      <th>Total gastado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaClientesAdmin">
+                    <tr>
+                      <td>
+                        <div style="font-weight:600;">Juan Garcia</div>
+                      </td>
+                      <td>juan.garcia@correo.com</td>
+                      <td>55 1234 5678</td>
+                      <td><span class="insignia insignia-amarilla">Frecuente</span></td>
+                      <td>8</td>
+                      <td>$1,240.00</td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver perfil</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="font-weight:600;">Maria Lopez</div>
+                      </td>
+                      <td>maria.lopez@correo.com</td>
+                      <td>55 8765 4321</td>
+                      <td><span class="insignia insignia-azul">Premium</span></td>
+                      <td>24</td>
+                      <td>$4,800.00</td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver perfil</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="font-weight:600;">Pedro Ruiz</div>
+                      </td>
+                      <td>pedro.ruiz@correo.com</td>
+                      <td>55 5555 1234</td>
+                      <td><span class="insignia insignia-gris">Nuevo</span></td>
+                      <td>1</td>
+                      <td>$89.00</td>
+                      <td><button class="btn btn-borde btn-pequeno">Ver perfil</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelReportes" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Reportes</span></div>
+              <h2>Reportes de ventas</h2>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-borde btn-pequeno" onclick="alert('Descargando Excel...')">Exportar Excel</button>
+              <button class="btn btn-borde btn-pequeno" onclick="alert('Generando PDF...')">Exportar PDF</button>
+            </div>
+          </div>
+          <div class="area-contenido-admin">
+            <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
+              <div class="fila-pestanas" style="margin:0;">
+                <button class="boton-pestana activo">Diario</button>
+                <button class="boton-pestana">Semanal</button>
+                <button class="boton-pestana">Mensual</button>
+              </div>
+              <input class="control-formulario" type="date" style="width:auto;">
+              <input class="control-formulario" type="date" style="width:auto;">
+              <button class="btn btn-primario btn-pequeno">Generar reporte</button>
+            </div>
+            <div class="cuadricula-kpi" style="grid-template-columns:repeat(4,1fr);">
+              <div class="kpi kpi-azul">
+                <div class="etiqueta-kpi">Total ventas</div>
+                <div class="valor-kpi">$48,250</div>
+                <div class="subtexto-kpi">Marzo 2026</div>
+              </div>
+              <div class="kpi kpi-verde">
+                <div class="etiqueta-kpi">Pedidos</div>
+                <div class="valor-kpi">312</div>
+                <div class="subtexto-kpi">+8% vs feb</div>
+              </div>
+              <div class="kpi kpi-amarillo">
+                <div class="etiqueta-kpi">Ticket promedio</div>
+                <div class="valor-kpi">$154</div>
+              </div>
+              <div class="kpi">
+                <div class="etiqueta-kpi">Tasa de conversion</div>
+                <div class="valor-kpi" style="color:var(--verde-azulado);">3.2%</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <div class="tarjeta" style="flex:2;min-width:260px;">
+                <div class="titulo-tarjeta">Ventas por dia</div>
+                <div class="grafico-ejemplo">
+                  <div class="barra" style="height:55%;"></div>
+                  <div class="barra" style="height:78%;"></div>
+                  <div class="barra" style="height:42%;"></div>
+                  <div class="barra" style="height:95%;"></div>
+                  <div class="barra" style="height:68%;"></div>
+                  <div class="barra" style="height:50%;"></div>
+                  <div class="barra" style="height:100%;"></div>
+                </div>
+              </div>
+              <div class="tarjeta" style="flex:1;min-width:220px;">
+                <div class="titulo-tarjeta">Productos mas vendidos</div>
+                <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;justify-content:space-between;"><span>Desinfectante Lavanda</span><strong>87
+                      uds</strong></div>
+                  <div style="height:6px;background:var(--borde);border-radius:3px;">
+                    <div style="width:87%;height:100%;background:var(--principal);border-radius:3px;"></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;"><span>Esponja magica x5</span><strong>64
+                      uds</strong></div>
+                  <div style="height:6px;background:var(--borde);border-radius:3px;">
+                    <div style="width:64%;height:100%;background:var(--verde-azulado);border-radius:3px;"></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;"><span>Quitagrasas</span><strong>51
+                      uds</strong></div>
+                  <div style="height:6px;background:var(--borde);border-radius:3px;">
+                    <div style="width:51%;height:100%;background:var(--acento);border-radius:3px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelInventario" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Inventario</span></div>
+              <h2>Control de inventario</h2>
+            </div>
+          </div>
+          <div class="area-contenido-admin">
+            <div
+              style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;">
+              <strong>Alertas de stock bajo:</strong> 2 productos estan por debajo del umbral minimo.
+            </div>
+            <div class="tarjeta" style="padding:0;overflow:hidden;">
+              <div class="contenedor-tabla">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Producto</th>
+                      <th>Stock actual</th>
+                      <th>Umbral minimo</th>
+                      <th>Estado</th>
+                      <th>Ultima actualizacion</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaInventarioAdmin">
+                    <tr>
+                      <td>EL-001</td>
+                      <td>Desinfectante Lavanda 1L</td>
+                      <td>48</td>
+                      <td>20</td>
+                      <td><span class="insignia insignia-verde">OK</span></td>
+                      <td>23/03/2026</td>
+                      <td><button class="btn btn-borde btn-pequeno">Ajustar</button></td>
+                    </tr>
+                    <tr>
+                      <td>EL-002</td>
+                      <td>Quitagrasas Industrial</td>
+                      <td>0</td>
+                      <td>10</td>
+                      <td><span class="insignia insignia-roja">Agotado</span></td>
+                      <td>20/03/2026</td>
+                      <td><button class="btn btn-peligro btn-pequeno">Reponer</button></td>
+                    </tr>
+                    <tr>
+                      <td>EL-003</td>
+                      <td>Pano microfibra x3</td>
+                      <td>7</td>
+                      <td>15</td>
+                      <td><span class="insignia insignia-amarilla">Stock bajo</span></td>
+                      <td>22/03/2026</td>
+                      <td><button class="btn btn-borde btn-pequeno">Ajustar</button></td>
+                    </tr>
+                    <tr>
+                      <td>EL-004</td>
+                      <td>Lavandina 2L</td>
+                      <td>55</td>
+                      <td>20</td>
+                      <td><span class="insignia insignia-verde">OK</span></td>
+                      <td>23/03/2026</td>
+                      <td><button class="btn btn-borde btn-pequeno">Ajustar</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelCupones" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Cupones</span></div>
+              <h2>Codigos de descuento</h2>
+            </div>
+            <button class="btn btn-primario btn-pequeno">+ Crear cupon</button>
+          </div>
+          <div class="area-contenido-admin">
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:300px;">
+                <div class="tarjeta" style="padding:0;overflow:hidden;">
+                  <div class="contenedor-tabla">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Codigo</th>
+                          <th>Descuento</th>
+                          <th>Usos / Limite</th>
+                          <th>Vence</th>
+                          <th>Estado</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                        <tbody id="tablaCuponesAdmin">
+                        <tr>
+                          <td style="font-weight:700;letter-spacing:1px;">LIMPIECITO15</td>
+                          <td>15%</td>
+                          <td>42 / 100</td>
+                          <td>30/06/2026</td>
+                          <td><span class="insignia insignia-verde">Activo</span></td>
+                          <td><button class="btn btn-secundario btn-pequeno">Desactivar</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:700;letter-spacing:1px;">BIENVENIDO10</td>
+                          <td>10%</td>
+                          <td>18 / 50</td>
+                          <td>31/12/2026</td>
+                          <td><span class="insignia insignia-verde">Activo</span></td>
+                          <td><button class="btn btn-secundario btn-pequeno">Desactivar</button></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:700;letter-spacing:1px;">VERANO20</td>
+                          <td>20%</td>
+                          <td>100 / 100</td>
+                          <td>01/03/2026</td>
+                          <td><span class="insignia insignia-gris">Expirado</span></td>
+                          <td><button class="btn btn-secundario btn-pequeno">Eliminar</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div style="width:300px;flex-shrink:0;">
+                <div class="tarjeta">
+                  <div class="titulo-tarjeta">Nuevo cupon</div>
+                  <div class="grupo-formulario"><label class="etiqueta-formulario">Codigo</label><input
+                      class="control-formulario" placeholder="Ej: PROMO25">
+                    <div class="ayuda-formulario">Generado automaticamente si se deja vacio.</div>
+                  </div>
+                  <div class="grupo-formulario"><label class="etiqueta-formulario">Tipo</label><select
+                      class="control-formulario">
+                      <option>Porcentaje (%)</option>
+                      <option>Monto fijo ($)</option>
+                    </select></div>
+                  <div class="grupo-formulario"><label class="etiqueta-formulario">Valor</label><input
+                      class="control-formulario" placeholder="Ej: 15"></div>
+                  <div class="grupo-formulario"><label class="etiqueta-formulario">Limite de usos</label><input
+                      class="control-formulario" placeholder="Ej: 100"></div>
+                  <div class="fila-formulario">
+                    <div class="grupo-formulario"><label class="etiqueta-formulario">Desde</label><input
+                        class="control-formulario" type="date"></div>
+                    <div class="grupo-formulario"><label class="etiqueta-formulario">Hasta</label><input
+                        class="control-formulario" type="date"></div>
+                  </div>
+                  <div class="grupo-formulario"><label class="etiqueta-formulario">Monto minimo de compra</label><input
+                      class="control-formulario" placeholder="$0"></div>
+                  <button class="btn btn-primario btn-completo">Crear cupon</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelPromociones" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Promociones</span></div>
+              <h2>Promociones y ofertas</h2>
+            </div>
+            <button class="btn btn-primario btn-pequeno">+ Nueva promocion</button>
+          </div>
+          <div class="area-contenido-admin">
+            <div class="tarjeta">
+              <div class="titulo-tarjeta">Promociones activas</div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div
+                  style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--fondo);border-radius:8px;">
+                  <div>
+                    <div style="font-weight:700;">2x1 en Esponjas</div>
+                    <div style="font-size:12px;color:var(--texto-secundario);">Valido 20/03/2026 - 31/03/2026
+                      &nbsp;|&nbsp; Categoria: Accesorios</div>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="insignia insignia-verde">Activa</span>
+                    <button class="btn btn-secundario btn-pequeno">Editar</button>
+                    <button class="btn btn-secundario btn-pequeno">Desactivar</button>
+                  </div>
+                </div>
+                <div
+                  style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--fondo);border-radius:8px;">
+                  <div>
+                    <div style="font-weight:700;">20% OFF en toda la categoria Pisos</div>
+                    <div style="font-size:12px;color:var(--texto-secundario);">Valido 01/04/2026 - 15/04/2026</div>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="insignia insignia-amarilla">Programada</span>
+                    <button class="btn btn-secundario btn-pequeno">Editar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelPrecios" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Precios</span></div>
+              <h2>Gestion de precios</h2>
+            </div>
+            <button class="btn btn-primario btn-pequeno" onclick="guardarPreciosAdmin()">Guardar
+              todos los cambios</button>
+          </div>
+          <div class="area-contenido-admin">
+            <div class="tarjeta" style="padding:0;overflow:hidden;">
+              <div class="contenedor-tabla">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Precio actual</th>
+                      <th>Precio nuevo</th>
+                      <th>Precio premium</th>
+                      <th>Ultimo cambio</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaPreciosAdmin">
+                    <tr>
+                      <td>Desinfectante Lavanda 1L</td>
+                      <td>$89.00</td>
+                      <td><input class="control-formulario" value="89.00" style="width:100px;padding:4px 8px;"></td>
+                      <td><input class="control-formulario" value="79.00" style="width:100px;padding:4px 8px;"></td>
+                      <td>23/03/2026</td>
+                    </tr>
+                    <tr>
+                      <td>Quitagrasas Industrial</td>
+                      <td>$125.00</td>
+                      <td><input class="control-formulario" value="125.00" style="width:100px;padding:4px 8px;"></td>
+                      <td><input class="control-formulario" value="110.00" style="width:100px;padding:4px 8px;"></td>
+                      <td>15/03/2026</td>
+                    </tr>
+                    <tr>
+                      <td>Pano microfibra x3</td>
+                      <td>$55.00</td>
+                      <td><input class="control-formulario" value="55.00" style="width:100px;padding:4px 8px;"></td>
+                      <td><input class="control-formulario" value="48.00" style="width:100px;padding:4px 8px;"></td>
+                      <td>10/03/2026</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelMantenimiento" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Mantenimiento</span></div>
+              <h2>Modo mantenimiento</h2>
+            </div>
+          </div>
+          <div class="area-contenido-admin" style="max-width:600px;">
+            <div class="tarjeta" style="border:2px solid var(--advertencia);">
+              <div class="titulo-tarjeta">Estado del sitio</div>
+              <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--fondo);border-radius:8px;margin-bottom:16px;">
+                <div>
+                  <div style="font-weight:700;">Sitio publico</div>
+                  <div style="font-size:13px;color:var(--exito);">Activo y funcionando</div>
+                </div>
+                <div class="contenedor-interruptor">
+                  <div class="interruptor activo" id="interruptorSitio" onclick="this.classList.toggle('activo')"></div>
+                  <span style="font-size:13px;font-weight:600;">En linea</span>
+                </div>
+              </div>
+              <div class="grupo-formulario"><label class="etiqueta-formulario">Mensaje para usuarios durante
+                  mantenimiento</label><textarea class="control-formulario"
+                  rows="3">Estamos realizando mejoras en el sitio. Volvemos pronto. Gracias por su paciencia.</textarea>
+              </div>
+              <div class="fila-formulario">
+                <div class="grupo-formulario"><label class="etiqueta-formulario">Inicio mantenimiento</label><input
+                    class="control-formulario" type="datetime-local"></div>
+                <div class="grupo-formulario"><label class="etiqueta-formulario">Fin estimado</label><input
+                    class="control-formulario" type="datetime-local"></div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-peligro">Activar modo mantenimiento</button>
+                <button class="btn btn-borde">Programar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelProveedores" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Proveedores</span></div>
+              <h2>Gestion de proveedores</h2>
+            </div>
+            <button class="btn btn-primario btn-pequeno">+ Agregar proveedor</button>
+          </div>
+          <div class="area-contenido-admin">
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:300px;">
+                <div class="tarjeta" style="padding:0;overflow:hidden;">
+                  <div class="contenedor-tabla">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Empresa</th>
+                          <th>Contacto</th>
+                          <th>Telefono</th>
+                          <th>Productos</th>
+                          <th>Saldo pendiente</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tablaProveedoresAdmin">
+                        <tr>
+                          <td>
+                            <div style="font-weight:600;">Quimicos del Norte SA</div>
+                          </td>
+                          <td>Ing. Ramon Vega</td>
+                          <td>55 9999 1111</td>
+                          <td>12</td>
+                          <td>$4,200.00</td>
+                          <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div style="font-weight:600;">Distribuidora Limpex</div>
+                          </td>
+                          <td>Lic. Sandra Cruz</td>
+                          <td>55 8888 2222</td>
+                          <td>5</td>
+                          <td>$0.00</td>
+                          <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tarjeta" style="margin-top:16px;">
+              <div class="titulo-tarjeta">Reporte de compras a proveedores</div>
+              <div style="display:flex;gap:10px;margin-bottom:12px;">
+                <select class="control-formulario" style="width:auto;">
+                  <option>Todos los proveedores</option>
+                  <option>Quimicos del Norte</option>
+                  <option>Limpex</option>
+                </select>
+                <input class="control-formulario" type="date" style="width:auto;">
+                <button class="btn btn-primario btn-pequeno">Generar</button>
+                <button class="btn btn-borde btn-pequeno">Exportar</button>
+              </div>
+              <div style="font-size:13px;color:var(--texto-secundario);">Total compras marzo 2026: <strong
+                  style="color:var(--texto);">$18,400.00</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="PanelAdministradores" class="vista">
+      <div class="distribucion-pagina">
+        <div class="barra-lateral-admin">
+          <div class="logo-barra">
+            <div class="marca-logotipo" style="background:var(--acento);color:var(--principal-oscuro);">EL</div>
+            Administracion
+          </div>
+          <div class="menu-barra">
+            <div class="opcion-menu" onclick="mostrarVista('PanelControl')">Tablero</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPedidos')">Pedidos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProductos')">Productos</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelClientes')">Clientes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelReportes')">Reportes</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelInventario')">Inventario</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelCupones')">Cupones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPromociones')">Promociones</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelPrecios')">Precios</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelProveedores')">Proveedores</div>
+            <div class="opcion-menu activo" onclick="mostrarVista('PanelAdministradores')">Admins</div>
+            <div class="opcion-menu" onclick="mostrarVista('PanelMantenimiento')">Mantenimiento</div>
+          </div>
+        </div>
+        <div class="contenido-principal-admin">
+          <div class="barra-superior-admin">
+            <div>
+              <div class="migas-pan">Panel / <span>Administradores</span></div>
+              <h2>Gestion de administradores</h2>
+            </div>
+            <button class="btn btn-primario btn-pequeno" onclick="crearAdministradorAdmin()">+ Agregar administrador</button>
+          </div>
+          <div class="area-contenido-admin">
+            <div class="tarjeta" style="padding:0;overflow:hidden;">
+              <div class="contenedor-tabla">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Email</th>
+                      <th>Rol</th>
+                      <th>Ultimo acceso</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaAdministradoresAdmin">
+                    <tr>
+                      <td>
+                        <div style="font-weight:600;">Carlos Mendez</div>
+                      </td>
+                      <td>carlos@ellimpiecito.mx</td>
+                      <td><span class="insignia insignia-roja">Super Admin</span></td>
+                      <td>Hoy 14:22</td>
+                      <td><span class="insignia insignia-verde">Activo</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Editar</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="font-weight:600;">Laura Gomez</div>
+                      </td>
+                      <td>laura@ellimpiecito.mx</td>
+                      <td><span class="insignia insignia-azul">Operaciones</span></td>
+                      <td>Ayer 09:15</td>
+                      <td><span class="insignia insignia-verde">Activo</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Editar</button> <button
+                          class="btn btn-secundario btn-pequeno">Eliminar</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="font-weight:600;">Roberto Diaz</div>
+                      </td>
+                      <td>roberto@ellimpiecito.mx</td>
+                      <td><span class="insignia insignia-amarilla">Reportes</span></td>
+                      <td>18/03/2026</td>
+                      <td><span class="insignia insignia-gris">Inactivo</span></td>
+                      <td><button class="btn btn-borde btn-pequeno">Editar</button> <button
+                          class="btn btn-secundario btn-pequeno">Eliminar</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script>
+    let API_URL = "http://localhost:8000"; // fallback para desarrollo
+    if (window.location.protocol.startsWith("http")) {
+      const path = window.location.pathname;
+      if (path.includes("/frontend/")) {
+        API_URL = window.location.origin + path.substring(0, path.indexOf("/frontend/")) + "/api";
+      } else {
+        API_URL = window.location.origin + path.substring(0, path.lastIndexOf("/")) + "/api";
+      }
+    }
+    let productos = [];
+
+    // Autenticación
+    async function hacerLogin() {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("usuario", JSON.stringify(data.usuario));
+          
+          if (data.usuario.rol === 'admin') {
+            actualizarNombreAdmin(data.usuario.nombre);
+            mostrarVista('PanelControl');
+          } else {
+            cargarCarrito();
+            mostrarVista('PaginaInicio');
+          }
+        } else {
+          const errorData = await response.json();
+          alert("Error: " + (errorData.detail || "Correo o contraseña incorrectos"));
+        }
+      } catch (error) {
+        console.error("Error al conectar con el servidor:", error);
+        alert("No se pudo conectar al servidor. Asegúrate de que el backend esté corriendo.");
+      }
+    }
+
+    function actualizarNombreAdmin(nombre) {
+      const el = document.getElementById('adminNombreSidebar');
+      if (el) el.textContent = nombre || 'Administrador';
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('usuario');
+      mostrarVista('VistaInicioSesion');
+    }
+
+    // --- Carga de Datos Cliente ---
+    async function cargarPerfilUsuario() {
+      try {
+        const res = await fetch(`${API_URL}/usuarios/perfil`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const perfil = await res.json();
+          const nombreCompleto = perfil.nombre || 'Usuario';
+          const [nombre, ...apellidos] = nombreCompleto.split(' ');
+          
+          const inicial = nombreCompleto.charAt(0).toUpperCase();
+          document.querySelectorAll('.avatar').forEach(el => {
+             if(el.id === 'perfilAvatarHeader' || el.id === 'perfilAvatarFoto' || !el.id) {
+               el.textContent = inicial;
+             }
+          });
+          
+          document.getElementById('perfilNombreHeader').textContent = nombreCompleto;
+          document.getElementById('perfilEmailHeader').textContent = perfil.email;
+          
+          const inputNombre = document.getElementById('perfilInputNombre');
+          if(inputNombre) inputNombre.value = nombre;
+          
+          const inputApellido = document.getElementById('perfilInputApellido');
+          if(inputApellido) inputApellido.value = apellidos.join(' ');
+          
+          const inputEmail = document.getElementById('perfilInputEmail');
+          if(inputEmail) inputEmail.value = perfil.email;
+          
+          const inputTel = document.getElementById('perfilInputTelefono');
+          if(inputTel) inputTel.value = perfil.telefono || '';
+        }
+      } catch(e) {
+        console.error("Error cargando perfil:", e);
+      }
+    }
+
+    async function cargarPedidosCliente() {
+      try {
+        const res = await fetch(`${API_URL}/pedidos`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          const contenedor = document.getElementById('contenedorPedidosCliente');
+          if (!contenedor) return;
+          
+          if (!data.pedidos || data.pedidos.length === 0) {
+            contenedor.innerHTML = '<div style="text-align:center;padding:40px;color:var(--texto-secundario);">Aún no tienes pedidos. ¡Empieza a comprar!</div>';
+            return;
+          }
+          
+          contenedor.innerHTML = data.pedidos.map(p => {
+            const fecha = new Date(p.fecha_creacion).toLocaleDateString('es-MX', {day: '2-digit', month: 'short', year: 'numeric'});
+            const numItems = p.items ? p.items.length : 0;
+            const itemsResumen = p.items ? p.items.map(i => `${i.nombre_producto} x${i.cantidad}`).join(', ') : '';
+            
+            let claseInsignia = 'gris';
+            let txtEstado = p.estado;
+            if(p.estado === 'pendiente') claseInsignia = 'amarilla';
+            if(p.estado === 'entregado') claseInsignia = 'verde';
+            if(p.estado === 'enviado') claseInsignia = 'azul';
+            
+            return `
+              <div class="tarjeta-pedido">
+                <div>
+                  <div class="numero-pedido">#ORD-${p.id.substring(0,8).toUpperCase()}</div>
+                  <div class="meta-pedido">${fecha} &nbsp;|&nbsp; ${numItems} producto${numItems!==1?'s':''}</div>
+                </div>
+                <div style="flex:1;padding:0 20px;font-size:13px;color:var(--texto-secundario);">${itemsResumen}</div>
+                <div><span class="insignia insignia-${claseInsignia}">${txtEstado}</span></div>
+                <div class="total-pedido">${formatearMoneda(p.total)}</div>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-borde btn-pequeno">Ver detalle</button>
+                  ${p.estado === 'pendiente' ? `<button class="btn btn-peligro btn-pequeno" onclick="cancelarPedidoCliente('${p.id}')">Cancelar</button>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch(e) {
+        console.error("Error cargando pedidos:", e);
+      }
+    }
+
+    async function cargarDireccionesCliente() {
+      try {
+        const res = await fetch(`${API_URL}/usuarios/direcciones`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const direcciones = await res.json();
+          const contenedor = document.getElementById('contenedorDireccionesCliente');
+          if (!contenedor) return;
+          
+          let html = '';
+          
+          direcciones.forEach(d => {
+            html += `
+              <div class="tarjeta" style="${d.es_predeterminada ? 'border:2px solid var(--principal);' : ''}position:relative;">
+                ${d.es_predeterminada ? '<div class="insignia insignia-azul" style="position:absolute;top:12px;right:12px;">Predeterminada</div>' : ''}
+                <div style="font-weight:700;margin-bottom:6px;">${d.calle} ${d.numero_exterior}</div>
+                <div style="font-size:13px;color:var(--texto-secundario);">
+                  ${d.colonia}, ${d.ciudad}<br>
+                  ${d.estado}, CP ${d.codigo_postal}
+                  ${d.referencias ? `<br><br><em>Ref: ${d.referencias}</em>` : ''}
+                </div>
+                <div style="display:flex;gap:8px;margin-top:14px;">
+                  <button class="btn btn-secundario btn-pequeno" onclick="eliminarDireccion('${d.id}')">Eliminar</button>
+                </div>
+              </div>
+            `;
+          });
+          
+          if(direcciones.length < 5) {
+            html += `
+              <div class="tarjeta"
+                style="border:2px dashed var(--borde);display:flex;align-items:center;justify-content:center;min-height:120px;cursor:pointer;"
+                onclick="alert('Esta función se conectará pronto.')">
+                <div style="text-align:center;color:var(--texto-secundario);">
+                  <div style="font-size:28px;margin-bottom:6px;">+</div>
+                  <div style="font-size:13px;font-weight:600;">Agregar nueva direccion</div>
+                  <div style="font-size:11px;">Maximo 5 direcciones</div>
+                </div>
+              </div>
+            `;
+          }
+          
+          contenedor.innerHTML = html;
+        }
+      } catch(e) {
+        console.error("Error cargando direcciones:", e);
+      }
+    }
+    
+    async function eliminarDireccion(id) {
+      if(!confirm('¿Eliminar esta dirección?')) return;
+      try {
+        const res = await fetch(`${API_URL}/usuarios/direcciones/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        if(res.ok) cargarDireccionesCliente();
+      } catch(e) { console.error("Error eliminando dirección", e); }
+    }
+    
+    async function cargarCarrito() {
+      try {
+        const res = await fetch(`${API_URL}/carrito`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const carrito = await res.json();
+          const contenedor = document.getElementById('contenedorItemsCarrito');
+          const resumen = document.getElementById('resumenTotalesCarrito');
+          
+          if (!contenedor || !resumen) return;
+          
+          // Actualizar contador en el header
+          const totalItems = (carrito.items || []).reduce((acc, curr) => acc + curr.cantidad, 0);
+          document.querySelectorAll('#indicadorCarrito,#indicadorCarrito2').forEach(b => { if (b) b.textContent = totalItems; });
+          
+          if (!carrito.items || carrito.items.length === 0) {
+            contenedor.innerHTML = '<div style="text-align:center;padding:40px;color:var(--texto-secundario);">Tu carrito está vacío</div>';
+            resumen.innerHTML = `
+              <div class="fila-resumen"><span>Subtotal</span><span>$0.00</span></div>
+              <div class="fila-resumen total"><span>Total</span><span>$0.00</span></div>
+            `;
+            return;
+          }
+          
+          let htmlItems = carrito.items.map(item => `
+            <div class="item-carrito">
+              <div class="imagen-item-carrito" style="display:flex;align-items:center;justify-content:center;background:var(--fondo);color:var(--principal);font-size:20px;">✓</div>
+              <div class="info-item-carrito">
+                <div class="nombre-item-carrito">${item.nombre_producto}</div>
+                <div class="subtexto-item-carrito">Precio unitario: ${formatearMoneda(item.precio_unitario)}</div>
+                <div style="margin-top:8px;" class="cantidad-carrito">
+                  <button class="boton-cantidad" onclick="actualizarCantidadItem('${item.id}', ${item.cantidad - 1})">-</button>
+                  <span style="font-weight:600;">${item.cantidad}</span>
+                  <button class="boton-cantidad" onclick="actualizarCantidadItem('${item.id}', ${item.cantidad + 1})">+</button>
+                  <button class="btn btn-secundario btn-pequeno" style="margin-left:12px;" onclick="eliminarItemCarrito('${item.id}')">Eliminar</button>
+                </div>
+              </div>
+              <div class="precio-item-carrito">${formatearMoneda(item.subtotal)}</div>
+            </div>
+          `).join('');
+          
+          htmlItems += `
+            <div style="margin-top:12px;">
+              <div class="grupo-input">
+                <input id="inputCuponCarrito" class="control-formulario" placeholder="Codigo de descuento" value="${carrito.cupon_aplicado || ''}">
+                <button class="btn btn-borde" onclick="aplicarCupon()">Aplicar</button>
+              </div>
+            </div>
+          `;
+          contenedor.innerHTML = htmlItems;
+          
+          resumen.innerHTML = `
+            <div class="fila-resumen"><span>Subtotal (${totalItems} items)</span><span>${formatearMoneda(carrito.subtotal)}</span></div>
+            ${carrito.descuento > 0 ? `<div class="fila-resumen"><span>Descuento cupón</span><span style="color:var(--exito);">-${formatearMoneda(carrito.descuento)}</span></div>` : ''}
+            <div class="fila-resumen"><span>Envio</span><span>$0.00 <span style="font-size:11px;color:var(--exito);">Gratis</span></span></div>
+            <div class="fila-resumen total"><span>Total</span><span>${formatearMoneda(carrito.total)}</span></div>
+          `;
+        }
+      } catch(e) {
+        console.error("Error cargando carrito:", e);
+      }
+    }
+    
+    async function actualizarCantidadItem(itemId, nuevaCantidad) {
+      if(nuevaCantidad < 1) {
+        eliminarItemCarrito(itemId);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_URL}/carrito/items/${itemId}`, { 
+          method: 'PUT', 
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ cantidad: nuevaCantidad })
+        });
+        if(res.ok) cargarCarrito();
+        else {
+          const data = await res.json();
+          alert("Error: " + (data.detail || "No se pudo actualizar"));
+        }
+      } catch(e) { console.error(e); }
+    }
+    
+    async function eliminarItemCarrito(itemId) {
+      try {
+        const res = await fetch(`${API_URL}/carrito/items/${itemId}`, { method: 'DELETE', headers: getAuthHeaders() });
+        if(res.ok) cargarCarrito();
+      } catch(e) { console.error(e); }
+    }
+    
+    async function aplicarCupon() {
+      const codigo = document.getElementById('inputCuponCarrito').value;
+      if(!codigo) return;
+      try {
+        const res = await fetch(`${API_URL}/carrito/cupon`, { 
+          method: 'POST', 
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ codigo })
+        });
+        if(res.ok) {
+           alert("Cupón aplicado!");
+           cargarCarrito();
+        } else {
+           const data = await res.json();
+           alert("Error: " + (data.detail || "Cupón inválido"));
+        }
+      } catch(e) { console.error(e); }
+    }
+    
+    async function cancelarPedidoCliente(id) {
+      if(!confirm('¿Estás seguro de que quieres cancelar este pedido?')) return;
+      try {
+        const res = await fetch(`${API_URL}/pedidos/${id}/cancelar`, { method: 'POST', headers: getAuthHeaders() });
+        if(res.ok) {
+          alert('Pedido cancelado');
+          cargarPedidosCliente();
+        } else {
+          alert('Error al cancelar el pedido');
+        }
+      } catch(e) {
+        console.error("Error cancelando:", e);
+      }
+    }
+
+    async function cargarVistaPago() {
+      try {
+        // Cargar direcciones
+        const resDir = await fetch(`${API_URL}/usuarios/direcciones`, { headers: getAuthHeaders() });
+        const selectDir = document.getElementById('pagoSelectDireccion');
+        if (resDir.ok && selectDir) {
+          const dirs = await resDir.json();
+          if (dirs.length === 0) {
+            selectDir.innerHTML = '<option value="">No tienes direcciones guardadas</option>';
+          } else {
+            selectDir.innerHTML = dirs.map(d => `<option value="${d.id}" ${d.es_predeterminada ? 'selected' : ''}>${d.calle} ${d.numero_exterior}, ${d.colonia}</option>`).join('');
+          }
+        }
+        
+        // Cargar carrito para el resumen
+        const resCar = await fetch(`${API_URL}/carrito`, { headers: getAuthHeaders() });
+        if (resCar.ok) {
+          const carrito = await resCar.json();
+          const divItems = document.getElementById('pagoItemsResumen');
+          const divTotales = document.getElementById('pagoTotalesResumen');
+          const btnPagar = document.getElementById('btnConfirmarPago');
+          
+          if (!divItems || !divTotales) return;
+          
+          if (!carrito.items || carrito.items.length === 0) {
+            divItems.innerHTML = '<div style="padding:10px 0;color:red;">Tu carrito está vacío</div>';
+            btnPagar.disabled = true;
+            return;
+          }
+          
+          btnPagar.disabled = false;
+          btnPagar.textContent = `Confirmar y pagar ${formatearMoneda(carrito.total)}`;
+          
+          divItems.innerHTML = carrito.items.map(i => `
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--borde);">
+              <span>${i.nombre_producto} x${i.cantidad}</span><span>${formatearMoneda(i.subtotal)}</span>
+            </div>
+          `).join('');
+          
+          divTotales.innerHTML = `
+            <div class="fila-resumen"><span>Subtotal</span><span>${formatearMoneda(carrito.subtotal)}</span></div>
+            ${carrito.descuento > 0 ? `<div class="fila-resumen"><span>Descuento</span><span style="color:var(--exito);">-${formatearMoneda(carrito.descuento)}</span></div>` : ''}
+            <div class="fila-resumen"><span>Envio</span><span>Gratis</span></div>
+            <div class="fila-resumen total"><span>Total</span><span>${formatearMoneda(carrito.total)}</span></div>
+          `;
+        }
+      } catch(e) { console.error(e); }
+    }
+    
+    async function procesarPago() {
+      const selectDir = document.getElementById('pagoSelectDireccion');
+      const direccionId = selectDir ? selectDir.value : null;
+      if (!direccionId) {
+        alert("Por favor selecciona una dirección de envío.");
+        return;
+      }
+      
+      const notas = document.getElementById('pagoNotas') ? document.getElementById('pagoNotas').value : '';
+      const btn = document.getElementById('btnConfirmarPago');
+      btn.disabled = true;
+      btn.textContent = 'Procesando...';
+      
+      try {
+        const res = await fetch(`${API_URL}/pedidos`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ direccion_id: direccionId, notas: notas })
+        });
+        
+        if (res.ok) {
+          const pedido = await res.json();
+          
+          // Mostrar confirmación
+          document.getElementById('confNumeroPedido').textContent = `#ORD-${pedido.id.substring(0,8).toUpperCase()}`;
+          document.getElementById('confFecha').textContent = new Date().toLocaleDateString('es-MX', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+          document.getElementById('confTotal').textContent = formatearMoneda(pedido.total);
+          
+          const itemsHtml = (pedido.items || []).map(i => `
+            <div style="display:flex;justify-content:space-between;padding:4px 0;">
+              <span>${i.nombre_producto} x${i.cantidad}</span><span>${formatearMoneda(i.subtotal)}</span>
+            </div>
+          `).join('');
+          document.getElementById('confItems').innerHTML = itemsHtml;
+          
+          // Actualizar carrito (vaciarlo en la UI)
+          document.querySelectorAll('#indicadorCarrito,#indicadorCarrito2').forEach(b => { if (b) b.textContent = '0'; });
+          
+          mostrarVista('VistaConfirmacion');
+        } else {
+          const error = await res.json();
+          alert("Error al procesar el pedido: " + (error.detail || "Intenta nuevamente"));
+          btn.disabled = false;
+          btn.textContent = 'Confirmar y pagar';
+        }
+      } catch(e) { 
+        console.error(e); 
+        alert("Error de conexión");
+        btn.disabled = false;
+        btn.textContent = 'Confirmar y pagar';
+      }
+    }
+
+    // Obtener Productos
+    async function obtenerProductos() {
+      try {
+        const response = await fetch(`${API_URL}/productos`);
+        if (response.ok) {
+          const data = await response.json();
+          productos = data.productos.map(p => ({
+            id: p.id,
+            nombre: p.nombre,
+            sku: p.sku || "N/A",
+            categoria: p.categoria_nombre || "General",
+            marca: p.marca || "El Limpiecito",
+            precio: p.precio,
+            precio_comparacion: p.precio_comparacion,
+            stock: p.stock || 0,
+            etiqueta: p.destacado ? "Destacado" : null,
+            icono: (p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : "&#x1F9F4;",
+            estrellas: 5,
+            resenas: Math.floor(Math.random() * 100) + 1,
+            activo: p.activo
+          }));
+          renderizarCuadriculas();
+          renderizarTablaProductosAdmin();
+        }
+      } catch (error) {
+        console.error("Error obteniendo productos:", error);
+      }
+    }
+
+    // --- Helpers de Admin ---
+    function getAuthHeaders() {
+      const token = localStorage.getItem("access_token");
+      return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+    }
+
+    function formatearMoneda(v) {
+      return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(v);
+    }
+
+    function formatearFecha(s) {
+      if (!s) return "N/A";
+      return new Date(s).toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // --- Carga de Datos Admin ---
+    async function cargarDashboardAdmin() {
+      // Actualizar fecha de hoy en el dashboard
+      const fechaHoy = document.querySelector('#PanelControl .barra-superior-admin div:last-child');
+      if (fechaHoy) {
+        const hoy = new Date();
+        fechaHoy.textContent = 'Hoy: ' + hoy.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/dashboard`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('dashVentasHoy').textContent = formatearMoneda(data.ventas_hoy.monto);
+          document.getElementById('dashPedidosHoy').textContent = `${data.ventas_hoy.pedidos} pedidos hoy`;
+          document.getElementById('dashPedidosPendientes').textContent = data.pedidos_pendientes;
+          document.getElementById('dashStockBajo').textContent = data.productos_stock_bajo;
+          document.getElementById('dashTotalClientes').textContent = data.total_clientes;
+        }
+      } catch (e) { console.error("Error dashboard:", e); }
+
+      // Cargar pedidos recientes
+      try {
+        const res2 = await fetch(`${API_URL}/admin/pedidos`, { headers: getAuthHeaders() });
+        if (res2.ok) {
+          const data2 = await res2.json();
+          const contenedor = document.getElementById('dashPedidosRecientes');
+          if (contenedor) {
+            const pedidos = (data2.pedidos || []).slice(0, 5);
+            if (pedidos.length === 0) {
+              contenedor.innerHTML = '<div style="color:var(--texto-secundario);text-align:center;padding:20px 0;">No hay pedidos aún</div>';
+            } else {
+              contenedor.innerHTML = pedidos.map((p, i) => `
+                <div style="display:flex;justify-content:space-between;padding:6px 0;${i < pedidos.length - 1 ? 'border-bottom:1px solid var(--borde);' : ''}">
+                  <div>
+                    <div style="font-weight:600;">#${p.id.substring(0,8).toUpperCase()}</div>
+                    <div style="font-size:11px;color:var(--texto-secundario);">${p.Usuario?.nombre || 'Cliente'}</div>
+                  </div>
+                  <span class="insignia insignia-${p.estado === 'entregado' ? 'verde' : p.estado === 'cancelado' ? 'gris' : p.estado === 'enviado' ? 'azul' : 'amarilla'}">${p.estado}</span>
+                </div>
+              `).join('');
+            }
+          }
+        }
+      } catch (e) { console.error("Error pedidos recientes:", e); }
+    }
+
+    async function cargarPedidosAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/admin/pedidos`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('tablaPedidosAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = data.pedidos.map(p => `
+            <tr>
+              <td style="font-weight:600;">#${p.id.substring(0,8).toUpperCase()}</td>
+              <td>${p.Usuario?.nombre || 'Cliente'}</td>
+              <td>${formatearFecha(p.fecha_creacion)}</td>
+              <td>${p.items_count || 0} items</td>
+              <td>${formatearMoneda(p.total)}</td>
+              <td><span class="insignia insignia-${p.estado === 'entregado' ? 'verde' : p.estado === 'cancelado' ? 'gris' : 'amarillo'}">${p.estado}</span></td>
+              <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error pedidos:", e); }
+    }
+
+    async function cargarClientesAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/admin/clientes`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('tablaClientesAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = data.clientes.map(c => `
+            <tr>
+              <td><div style="font-weight:600;">${c.nombre}</div></td>
+              <td>${c.email}</td>
+              <td>${c.telefono || 'N/A'}</td>
+              <td><span class="insignia insignia-azul">Cliente</span></td>
+              <td>-</td>
+              <td>-</td>
+              <td><button class="btn btn-borde btn-pequeno">Ver perfil</button></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error clientes:", e); }
+    }
+
+    function renderizarTablaProductosAdmin() {
+      const tbody = document.getElementById('tablaProductosAdmin');
+      if (!tbody) return;
+      tbody.innerHTML = productos.map(p => `
+        <tr>
+          <td>${p.sku}</td>
+          <td>
+            <div style="font-weight:600;">${p.nombre}</div>
+            <div style="font-size:11px;color:var(--texto-secundario);">${p.marca}</div>
+          </td>
+          <td>${p.categoria}</td>
+          <td>${formatearMoneda(p.precio)}</td>
+          <td>${p.stock}</td>
+          <td><span class="insignia insignia-${p.stock > 0 ? 'verde' : 'roja'}">${p.stock > 0 ? 'Visible' : 'Agotado'}</span></td>
+          <td><button class="btn btn-borde btn-pequeno">Editar</button></td>
+        </tr>
+      `).join('');
+    }
+
+    async function cargarInventarioAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/admin/inventario`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('tablaInventarioAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = data.productos.map(p => `
+            <tr>
+              <td>${p.sku}</td>
+              <td>${p.nombre}</td>
+              <td>${p.stock}</td>
+              <td>${p.stock_minimo || 5}</td>
+              <td><span class="insignia insignia-${p.stock > (p.stock_minimo || 5) ? 'verde' : 'amarillo'}">${p.stock > 0 ? 'OK' : 'Agotado'}</span></td>
+              <td>${formatearFecha(new Date())}</td>
+              <td><button class="btn btn-borde btn-pequeno">Ajustar</button></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error inventario:", e); }
+    }
+
+    async function cargarCuponesAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/admin/cupones`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('tablaCuponesAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = data.map(c => `
+            <tr>
+              <td style="font-weight:700;letter-spacing:1px;">${c.codigo}</td>
+              <td>${c.descuento_porcentaje ? c.descuento_porcentaje + '%' : formatearMoneda(c.descuento_fijo)}</td>
+              <td>${c.usos_actuales} / ${c.limite_usos || '∞'}</td>
+              <td>${formatearFecha(c.fecha_expiracion)}</td>
+              <td><span class="insignia insignia-${c.activo ? 'verde' : 'gris'}">${c.activo ? 'Activo' : 'Inactivo'}</span></td>
+              <td><button class="btn btn-secundario btn-pequeno">${c.activo ? 'Desactivar' : 'Activar'}</button></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error cupones:", e); }
+    }
+
+    async function cargarProveedoresAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/admin/proveedores`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('tablaProveedoresAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = data.map(p => `
+            <tr>
+              <td><div style="font-weight:600;">${p.nombre}</div></td>
+              <td>${p.contacto_nombre || '-'}</td>
+              <td>${p.telefono || '-'}</td>
+              <td>-</td>
+              <td>$0.00</td>
+              <td><button class="btn btn-borde btn-pequeno">Ver</button></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error proveedores:", e); }
+    }
+
+    async function cargarPreciosAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/productos`);
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('tablaPreciosAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = data.productos.map(p => `
+            <tr>
+              <td>
+                <div style="font-weight:600;">${p.nombre}</div>
+                <div style="font-size:11px;color:var(--texto-secundario);">${p.sku || 'N/A'}</div>
+              </td>
+              <td>${formatearMoneda(p.precio)}</td>
+              <td>
+                <input type="number" step="0.01" class="control-formulario input-precio-nuevo" 
+                       data-id="${p.id}" value="${p.precio}" style="width:100px;padding:4px 8px;">
+              </td>
+              <td>
+                <input type="number" step="0.01" class="control-formulario input-precio-premium" 
+                       data-id="${p.id}" value="${p.precio_comparacion || p.precio}" style="width:100px;padding:4px 8px;">
+              </td>
+              <td>${formatearFecha(p.fecha_creacion)}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error cargando precios:", e); }
+    }
+
+    async function guardarPreciosAdmin() {
+      const inputsNormal = document.querySelectorAll('.input-precio-nuevo');
+      const inputsPremium = document.querySelectorAll('.input-precio-premium');
+      
+      let actualizados = 0;
+      let errores = 0;
+
+      for (let i = 0; i < inputsNormal.length; i++) {
+        const inputNormal = inputsNormal[i];
+        const inputPremium = inputsPremium[i];
+        const productId = inputNormal.getAttribute('data-id');
+        
+        const nuevoPrecio = parseFloat(inputNormal.value);
+        const nuevoPrecioPremium = parseFloat(inputPremium.value);
+
+        // Buscar producto original en el array para ver si cambió
+        const prodOriginal = productos.find(p => p.id === productId);
+        if (prodOriginal) {
+          const precioComparacionOriginal = prodOriginal.precio_comparacion || prodOriginal.precio;
+          
+          if (nuevoPrecio !== parseFloat(prodOriginal.precio) || nuevoPrecioPremium !== parseFloat(precioComparacionOriginal)) {
+            try {
+              const res = await fetch(`${API_URL}/productos/${productId}`, {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({
+                  precio: nuevoPrecio,
+                  precio_comparacion: nuevoPrecioPremium
+                })
+              });
+              if (res.ok) {
+                actualizados++;
+              } else {
+                errores++;
+              }
+            } catch (e) {
+              console.error(`Error al actualizar producto ${productId}:`, e);
+              errores++;
+            }
+          }
+        }
+      }
+
+      if (actualizados > 0) {
+        alert(`¡Precios guardados! Se actualizaron ${actualizados} productos.`);
+        obtenerProductos(); // Recargar productos globales y catálogo
+        cargarPreciosAdmin(); // Recargar tabla de precios
+      } else if (errores > 0) {
+        alert(`Ocurrieron algunos errores al guardar los precios.`);
+      } else {
+        alert("No se detectaron cambios en los precios.");
+      }
+    }
+
+    async function cargarAdministradoresAdmin() {
+      try {
+        const res = await fetch(`${API_URL}/admin/equipo`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          const admins = await res.json();
+          const tbody = document.getElementById('tablaAdministradoresAdmin');
+          if (!tbody) return;
+          tbody.innerHTML = admins.map(a => `
+            <tr>
+              <td>
+                <div style="font-weight:600;">${a.nombre}</div>
+              </td>
+              <td>${a.email}</td>
+              <td><span class="insignia insignia-roja">Admin</span></td>
+              <td>${formatearFecha(a.fecha_creacion)}</td>
+              <td><span class="insignia insignia-${a.activo ? 'verde' : 'gris'}">${a.activo ? 'Activo' : 'Inactivo'}</span></td>
+              <td>
+                <button class="btn btn-secundario btn-pequeno" onclick="eliminarAdministradorAdmin('${a.id}')">Revocar privilegios</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) { console.error("Error cargando administradores:", e); }
+    }
+
+    async function crearAdministradorAdmin() {
+      const nombre = prompt("Nombre completo del nuevo administrador:");
+      if (!nombre) return;
+      const email = prompt("Correo electrónico:");
+      if (!email) return;
+      const telefono = prompt("Teléfono (opcional):") || "";
+      const password = prompt("Establece una contraseña provisional (mínimo 6 caracteres):");
+      if (!password || password.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/equipo`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            nombre: nombre,
+            email: email,
+            telefono: telefono,
+            password: password
+          })
+        });
+
+        if (res.ok) {
+          alert("¡Administrador creado con éxito!");
+          cargarAdministradoresAdmin();
+        } else {
+          const data = await res.json();
+          alert("Error: " + (data.detail || "No se pudo crear el administrador"));
+        }
+      } catch (e) {
+        console.error(e);
+        alert("Error de conexión al crear administrador.");
+      }
+    }
+
+    async function eliminarAdministradorAdmin(adminId) {
+      if (!confirm("¿Estás seguro de revocar los privilegios de administrador a este usuario? Se convertirá en cliente inactivo.")) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/equipo/${adminId}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+
+        if (res.ok) {
+          alert("Privilegios revocados.");
+          cargarAdministradoresAdmin();
+        } else {
+          const data = await res.json();
+          alert("Error: " + (data.detail || "No se pudo revocar los privilegios"));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function tarjetaProducto(p) {
+      return `<div class="tarjeta-producto" onclick="mostrarVista('PaginaProducto')">
+    <div class="imagen-producto" style="cursor:pointer;">
+      ${p.etiqueta ? `<span class="etiqueta-producto">${p.etiqueta}</span>` : ''}
+      <span style="font-size:48px;">${p.icono}</span>
+    </div>
+    <div class="cuerpo-producto">
+      <div class="marca-producto">${p.marca}</div>
+      <div class="nombre-producto">${p.nombre}</div>
+      <div class="estrellas-producto">${'★'.repeat(Math.floor(p.estrellas))}${'☆'.repeat(5 - Math.floor(p.estrellas))} <span style="color:var(--texto-secundario);">(${p.resenas})</span></div>
+      <div class="fila-precio-producto">
+        <span class="precio-producto">$${p.precio}</span>
+        <span class="unidad-producto">MXN</span>
+      </div>
+      <button class="btn btn-primario btn-completo" onclick="event.stopPropagation();agregarAlCarrito('${p.id}', 1)">Agregar al carrito</button>
+    </div>
+  </div>`;
+    }
+
+    function renderizarCuadriculas() {
+      const cuadriculaInicio = document.getElementById('cuadriculaInicio');
+      if (cuadriculaInicio) cuadriculaInicio.innerHTML = productos.slice(0, 6).map(tarjetaProducto).join('');
+      const cuadriculaOfertas = document.getElementById('cuadriculaOfertas');
+      if (cuadriculaOfertas) cuadriculaOfertas.innerHTML = productos.filter(p => p.etiqueta).map(tarjetaProducto).join('');
+      const cuadriculaCatalogo = document.getElementById('cuadriculaCatalogo');
+      if (cuadriculaCatalogo) cuadriculaCatalogo.innerHTML = productos.map(tarjetaProducto).join('');
+      const cuadriculaRelacionados = document.getElementById('cuadriculaRelacionados');
+      if (cuadriculaRelacionados) cuadriculaRelacionados.innerHTML = productos.slice(0, 4).map(tarjetaProducto).join('');
+    }
+
+    async function agregarAlCarrito(productoId, cantidad = 1) {
+      const btn = event.currentTarget;
+      const textoOriginal = btn.textContent;
+      btn.textContent = 'Agregando...';
+      btn.disabled = true;
+      
+      try {
+        const res = await fetch(`${API_URL}/carrito/items`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ producto_id: productoId, cantidad: cantidad })
+        });
+        
+        if (res.ok) {
+          const carrito = await res.json();
+          const totalItems = (carrito.items || []).reduce((acc, curr) => acc + curr.cantidad, 0);
+          document.querySelectorAll('#indicadorCarrito,#indicadorCarrito2').forEach(b => { if (b) b.textContent = totalItems; });
+          
+          btn.textContent = '¡Agregado!';
+          btn.style.backgroundColor = 'var(--exito)';
+          setTimeout(() => {
+            btn.textContent = textoOriginal;
+            btn.style.backgroundColor = '';
+            btn.disabled = false;
+          }, 1500);
+        } else {
+          const error = await res.json();
+          alert(error.detail || 'Necesitas iniciar sesión para comprar');
+          btn.textContent = textoOriginal;
+          btn.disabled = false;
+        }
+      } catch (e) {
+        console.error(e);
+        btn.textContent = textoOriginal;
+        btn.disabled = false;
+      }
+    }
+
+    function mostrarVista(id) {
+      document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+      const elemento = document.getElementById(id);
+      if (elemento) {
+        elemento.classList.add('activa');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Cargar datos si es una vista de admin
+        if (id === 'PanelControl') cargarDashboardAdmin();
+        if (id === 'PanelPedidos') cargarPedidosAdmin();
+        if (id === 'PanelClientes') cargarClientesAdmin();
+        if (id === 'PanelProductos') renderizarTablaProductosAdmin();
+        if (id === 'PanelInventario') cargarInventarioAdmin();
+        if (id === 'PanelCupones') cargarCuponesAdmin();
+        if (id === 'PanelProveedores') cargarProveedoresAdmin();
+        if (id === 'PanelPrecios') cargarPreciosAdmin();
+        if (id === 'PanelAdministradores') cargarAdministradoresAdmin();
+        
+        // Cargar datos si es una vista de cliente
+        if (id === 'VistaPerfil') cargarPerfilUsuario();
+        if (id === 'VistaHistorial') cargarPedidosCliente();
+        if (id === 'VistaDirecciones') cargarDireccionesCliente();
+        if (id === 'VistaCarrito') cargarCarrito();
+        if (id === 'VistaPago') cargarVistaPago();
+      }
+    }
+
+    function mostrarPestanaPerfil(idPestana, boton) {
+      document.querySelectorAll('.pestana-perfil').forEach(t => t.classList.remove('activo'));
+      boton.classList.add('activo');
+    }
+
+    // Inicialización
+    obtenerProductos();
+
+    // Auto-login: si ya hay sesión guardada, ir a la vista correcta
+    (function verificarSesionGuardada() {
+      const token = localStorage.getItem('access_token');
+      const usuarioStr = localStorage.getItem('usuario');
+      if (token && usuarioStr) {
+        try {
+          const usuario = JSON.parse(usuarioStr);
+          if (usuario.rol === 'admin') {
+            actualizarNombreAdmin(usuario.nombre);
+            mostrarVista('PanelControl');
+          } else {
+            cargarCarrito();
+            mostrarVista('PaginaInicio');
+          }
+        } catch(e) { /* sesión corrupta, mantener en login */ }
+      }
+    })();
+  </script>
+</body>
+
+</html>
