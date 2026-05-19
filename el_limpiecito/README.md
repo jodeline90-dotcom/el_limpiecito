@@ -1,166 +1,85 @@
-# 🧹 El Limpiecito — Backend API
+# 🧹 El Limpiecito — Tienda Online (PHP & MySQL)
 
-Backend completo en **FastAPI + Supabase** para la tienda de productos de limpieza "El Limpiecito".
+Este es el proyecto de la tienda online de productos de limpieza **El Limpiecito**, migrado completamente a una arquitectura clásica, robusta y fácil de desplegar usando **PHP** y **MySQL**.
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Estructura del Proyecto
 
 ```
 el_limpiecito/
-├── app/
-│   ├── main.py                  # Punto de entrada, CORS, middleware, lifespan
-│   ├── config.py                # Configuración centralizada (pydantic-settings)
-│   ├── database.py              # Conexiones Supabase + SQLAlchemy
-│   ├── dependencies.py          # get_current_user, get_admin_user
-│   ├── routers/
-│   │   ├── auth.py              # POST /auth/registro, /login, /recuperar-password, /cambiar-password
-│   │   ├── productos.py         # GET/POST/PUT/PATCH /productos
-│   │   ├── carrito.py           # GET/POST/PUT/DELETE /carrito
-│   │   ├── pedidos.py           # POST /pedidos (transacción atómica)
-│   │   ├── pagos.py             # Stripe PaymentIntent + Webhook
-│   │   ├── usuarios.py          # Perfil, foto, direcciones
-│   │   └── admin.py             # Dashboard, reportes, cupones, proveedores
-│   ├── models/
-│   │   └── schemas.py           # Todos los schemas Pydantic v2
-│   ├── services/
-│   │   ├── email_service.py     # Resend — bienvenida, recuperación, confirmación
-│   │   ├── pdf_service.py       # WeasyPrint — generación de facturas PDF
-│   │   ├── stock_service.py     # Actualización/restauración transaccional de stock
-│   │   └── notificacion_service.py  # Notificaciones internas
-│   └── utils/
-│       ├── helpers.py           # Utilidades compartidas (paginación, formateo, etc.)
-│       └── storage.py           # Helpers para Supabase Storage
+├── api/
+│   ├── config.example.php       # Ejemplo de configuración (renombrar a config.php)
+│   ├── db.php                   # Conexión a la base de datos usando PDO
+│   ├── auth.php                 # Login, registro y sesiones de usuario
+│   ├── productos.php            # Obtención y edición de productos
+│   ├── carrito.php              # Gestión del carrito de compras
+│   ├── pedidos.php              # Creación de pedidos y transacciones
+│   ├── usuarios.php             # Direcciones y perfil de usuario
+│   ├── admin.php                # Consultas para el panel de administración
+│   ├── pagos.php                # Integración con Stripe
+│   ├── helpers.php              # Respuestas JSON comunes y validaciones
+│   └── index.php                # Enrutador principal de la API
+├── frontend/
+│   └── index.html               # SPA del frontend (HTML, CSS y JS integrado)
 ├── sql/
-│   └── funciones_rpc.sql        # ⚠️ Ejecutar en Supabase ANTES de arrancar
-├── logs/                        # Logs de la app (auto-generado)
-├── .env.example                 # Variables de entorno de ejemplo
-├── requirements.txt             # Dependencias Python
-├── Procfile                     # Para Railway
-└── railway.toml                 # Configuración de deploy en Railway
+│   └── el_limpiecito_mysql.sql  # Script de base de datos MySQL (Tablas y datos iniciales)
+└── README.md                    # Este archivo
 ```
 
 ---
 
-## ⚡ Inicio rápido
+## 🚀 Guía de Instalación y Ejecución Local (XAMPP)
 
-### 1. Clonar e instalar dependencias
+Para que el proyecto funcione en tu computadora local o para que tu profesor lo revise, sigue estos sencillos pasos:
 
-```bash
-git clone <tu-repo>
-cd el_limpiecito
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
+### 1. Requisitos Previos
+* Tener instalado **XAMPP** (con soporte para PHP 8.x y MySQL/MariaDB).
+* Tener **Git** instalado (opcional, para clonar el repositorio).
 
-### 2. Configurar variables de entorno
+### 2. Clonar y ubicar el proyecto
+Clona este repositorio o descarga el código fuente y coloca la carpeta `el_limpiecito` dentro del directorio `htdocs` de tu servidor local XAMPP:
+* **Windows:** `C:\xampp\htdocs\el_limpiecito`
+* **macOS:** `/Applications/XAMPP/xamppfiles/htdocs/el_limpiecito`
 
-```bash
-cp .env.example .env
-# Edita .env con tus claves reales de Supabase, Stripe y Resend
-```
+### 3. Activar XAMPP
+Abre el panel de control de XAMPP e inicia los siguientes servicios:
+1. **Apache** (Servidor Web)
+2. **MySQL** (Base de Datos)
 
-### 3. Ejecutar SQL en Supabase
+### 4. Crear e importar la base de datos
+1. Abre tu navegador e ingresa a **phpMyAdmin**: [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
+2. Crea una nueva base de datos con el nombre **`el limpiecito`** (con cotejamiento `utf8mb4_general_ci`).
+3. Ve a la pestaña **Importar**, selecciona el archivo ubicado en:
+   `el_limpiecito/sql/el_limpiecito_mysql.sql`
+4. Haz clic en **Importar** (en la parte inferior) para cargar todas las tablas y datos de prueba.
 
-En tu proyecto de Supabase ve a **SQL Editor** y ejecuta el contenido de:
-```
-sql/funciones_rpc.sql
-```
-Esto agrega columnas extra y funciones RPC que necesita el backend.
+### 5. Configurar credenciales
+1. Entra a la carpeta `el_limpiecito/api/`.
+2. Copia el archivo `config.example.php` y nómbralo **`config.php`**.
+3. Abre `config.php` en un editor de texto y asegúrate de que las credenciales coincidan con las de tu base de datos de XAMPP (por defecto, en XAMPP el usuario es `root` y no tiene contraseña).
+   ```php
+   define('DB_HOST', '127.0.0.1');
+   define('DB_USER', 'root');
+   define('DB_PASS', '');
+   define('DB_NAME', 'el limpiecito');
+   ```
 
-### 4. Configurar Supabase Storage
+### 6. Ejecutar la aplicación
+Una vez configurado todo, abre tu navegador favorito y accede a:
+👉 [**http://localhost/el_limpiecito/frontend/index.html**](http://localhost/el_limpiecito/frontend/index.html)
 
-En Supabase → **Storage**, crea dos buckets públicos:
-- `productos` — imágenes de productos
-- `avatars` — fotos de perfil de usuarios
-
-### 5. Arrancar el servidor
-
-```bash
-# Desarrollo (con recarga automática)
-uvicorn app.main:app --reload --port 8000
-
-# La API estará en http://localhost:8000
-# Documentación interactiva: http://localhost:8000/docs
-```
-
----
-
-## 🔌 Endpoints principales
-
-| Método | Ruta | Descripción | Auth |
-|--------|------|-------------|------|
-| POST | `/auth/registro` | Crear cuenta | ❌ |
-| POST | `/auth/login` | Login → JWT | ❌ |
-| POST | `/auth/recuperar-password` | Email de recuperación | ❌ |
-| PUT | `/auth/cambiar-password` | Nueva contraseña | ✅ |
-| GET | `/productos` | Listar con filtros | ❌ |
-| GET | `/productos/{id}` | Detalle + visitas | ❌ |
-| POST | `/productos` | Crear producto | 👑 Admin |
-| GET | `/carrito` | Ver carrito | ✅ |
-| POST | `/carrito/items` | Agregar al carrito | ✅ |
-| POST | `/carrito/cupon` | Aplicar cupón | ✅ |
-| POST | `/pedidos` | Crear pedido (atómico) | ✅ |
-| POST | `/pagos/stripe/intent` | Crear PaymentIntent | ✅ |
-| POST | `/pagos/stripe/webhook` | Webhook Stripe | 🔑 Stripe |
-| GET | `/usuarios/perfil` | Ver perfil | ✅ |
-| GET | `/admin/dashboard` | Dashboard admin | 👑 Admin |
-| GET | `/admin/reportes/ventas` | Reporte de ventas | 👑 Admin |
-| GET | `/admin/inventario` | Stock y alertas | 👑 Admin |
+El frontend detectará automáticamente la ruta relativa de la API (`/el_limpiecito/api/`) para comunicarse con la base de datos.
 
 ---
 
-## 🔐 Seguridad implementada
+## 🔑 Cuentas de Acceso de Prueba
 
-- **JWT** firmados por Supabase Auth, verificados en cada request
-- **Rate limiting** en `/auth/login`: 5 intentos / 15 min por IP
-- **Roles**: `cliente` y `admin` — rutas de admin bloqueadas con `get_admin_user()`
-- **Webhook Stripe**: verificación de firma `stripe-signature` obligatoria
-- **Validación de datos**: Pydantic v2 en todos los endpoints
-- **CORS** configurado explícitamente por origen
+El script SQL incluye cuentas de prueba precargadas para evaluar el funcionamiento del sistema:
 
----
-
-## 💳 Flujo de pago completo
-
-```
-Frontend                    Backend                     Servicios externos
-   │                           │                              │
-   │── POST /pedidos ──────────▶│── Transacción atómica:      │
-   │                           │   crear pedido               │
-   │                           │   crear items                │
-   │                           │   descontar stock            │
-   │                           │   vaciar carrito             │
-   │◀── { pedido_id } ─────────│                              │
-   │                           │                              │
-   │── POST /pagos/stripe/intent▶│── stripe.PaymentIntent.create ──▶ Stripe
-   │◀── { client_secret } ─────│◀─────────────────────────────────│
-   │                           │                              │
-   │── Confirmar con Stripe.js──────────────────────────────▶ Stripe
-   │                           │                              │
-   │                           │◀── Webhook payment_intent.succeeded
-   │                           │── Actualizar estado pedido   │
-   │                           │── Generar PDF (WeasyPrint)   │
-   │                           │── Enviar email + PDF (Resend)│
-   │                           │── Crear notificación         │
-```
-
----
-
-## 🚀 Deploy en Railway
-
-1. Conecta tu repositorio en [railway.app](https://railway.app)
-2. Agrega las variables de entorno desde `.env.example`
-3. Railway detecta automáticamente el `Procfile` y hace el deploy
-4. Configura el webhook de Stripe apuntando a `https://tu-app.railway.app/pagos/stripe/webhook`
-
----
-
-## 🛠️ Variables de entorno requeridas
-
-Ver `.env.example` para la lista completa. Las **obligatorias** son:
-- `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`
-- `DATABASE_URL` (conexión directa PostgreSQL para transacciones)
-- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
-- `RESEND_API_KEY`
+* **Administrador (Panel de Control completo):**
+  * **Usuario:** `admin@ellimpiecito.com`
+  * **Contraseña:** `admin123`
+* **Cliente (Tienda y pedidos):**
+  * **Usuario:** `cliente@ellimpiecito.com`
+  * **Contraseña:** `cliente123`
