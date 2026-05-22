@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/usuarios.php - Endpoints de Perfil y Usuario
-// ============================================================
+
 
 function handle_usuarios_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';

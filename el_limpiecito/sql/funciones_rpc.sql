@@ -1,10 +1,4 @@
--- ============================================================
--- sql/funciones_rpc.sql
--- Funciones PostgreSQL necesarias para el backend
--- Ejecutar en Supabase → SQL Editor ANTES de arrancar la app
--- ============================================================
 
--- Incrementar visitas de un producto (background task)
 CREATE OR REPLACE FUNCTION incrementar_visitas_producto(p_id UUID)
 RETURNS void LANGUAGE sql SECURITY DEFINER AS $$
   UPDATE "Producto"
@@ -12,7 +6,7 @@ RETURNS void LANGUAGE sql SECURITY DEFINER AS $$
   WHERE id = p_id;
 $$;
 
--- Vaciar carrito de un usuario
+
 CREATE OR REPLACE FUNCTION vaciar_carrito(p_usuario_id UUID)
 RETURNS void LANGUAGE sql SECURITY DEFINER AS $$
   DELETE FROM "ItemCarrito"
@@ -22,7 +16,7 @@ RETURNS void LANGUAGE sql SECURITY DEFINER AS $$
   WHERE usuario_id = p_usuario_id;
 $$;
 
--- Columnas extra que necesita el backend (todas idempotentes con IF NOT EXISTS)
+
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='Pedido' AND column_name='stripe_payment_intent_id')
   THEN ALTER TABLE "Pedido" ADD COLUMN stripe_payment_intent_id TEXT; END IF;

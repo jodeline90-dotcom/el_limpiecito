@@ -1,12 +1,10 @@
 <?php
-// ============================================================
-// api/admin.php - Endpoints Administrativos
-// ============================================================
+
 
 function handle_admin_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';
     $pdo = get_db_connection();
-    $admin = get_authenticated_user(true); // Requiere rol 'admin'
+    $admin = get_authenticated_user(true); 
 
     // GET /admin/dashboard
     if ($method === 'GET' && $action === 'dashboard') {
@@ -58,7 +56,7 @@ function handle_admin_routes($method, $segments, $data) {
         send_json_response(["mensaje" => "Estado actualizado"]);
     }
     
-    // Recálculo masivo de niveles
+    
     if ($method === 'POST' && $action === 'usuarios' && ($segments[2] ?? '') === 'recalcular-niveles') {
         $stmt = $pdo->query("SELECT u.id, SUM(p.total) as gastado FROM Usuario u LEFT JOIN Pedido p ON u.id = p.usuario_id AND p.estado = 'entregado' WHERE u.rol = 'cliente' GROUP BY u.id");
         $clientes = $stmt->fetchAll();

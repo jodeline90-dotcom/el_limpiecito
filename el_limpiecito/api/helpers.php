@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/helpers.php - Funciones útiles y de seguridad
-// ============================================================
+
 
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/db.php';
@@ -30,22 +28,19 @@ function generate_uuid() {
 
 // ─── Bridge de Autenticación ───────────────────────────────────────────────
 
-/**
- * Retorna la información del usuario autenticado leyendo el Session ID 
- * desde el header de 'Authorization' (mantiene compatibilidad con el frontend).
- */
+
 function get_authenticated_user($require_admin = false) {
     $headers = getallheaders();
     $token = null;
     
-    // El frontend de "El Limpiecito" manda Authorization: Bearer <token>
+    // El frontend de manda Authorization: Bearer <token>
     if (isset($headers['Authorization'])) {
         if (preg_match('/Bearer\s(\S+)/', $headers['Authorization'], $matches)) {
             $token = $matches[1];
         }
     }
     
-    // Si tenemos un token, usamos ese ID para reanudar la sesión de PHP
+    //  ID para reanudar la sesión de PHP
     if ($token && preg_match('/^[a-zA-Z0-9,-]{22,64}$/', $token)) {
         session_id($token);
     }
@@ -60,7 +55,7 @@ function get_authenticated_user($require_admin = false) {
         send_error_response("No autorizado. Sesión inválida o expirada.", 401);
     }
     
-    // Verificamos si la cuenta sigue activa
+    // Verificamos cuenta sigue activa
     $pdo = get_db_connection();
     $stmt = $pdo->prepare("SELECT activo, rol, nivel FROM Usuario WHERE id = ?");
     $stmt->execute([$user['id']]);
@@ -83,7 +78,7 @@ function get_authenticated_user($require_admin = false) {
     return $user;
 }
 
-// Obtener usuario opcional (por ejemplo, para visitas de carrito anónimas vs logueadas)
+// Obtener usuario opcional 
 function get_optional_user() {
     $headers = getallheaders();
     $token = null;
@@ -101,7 +96,7 @@ function get_optional_user() {
     return isset($_SESSION['usuario']) ? $_SESSION['usuario'] : null;
 }
 
-// ─── Envíos de Correo Electrónico (Resend API Nativa) ──────────────────────
+//  Envíos de Correo Electrónico 
 
 function send_email($to, $subject, $html_body) {
     if (empty(RESEND_API_KEY)) {

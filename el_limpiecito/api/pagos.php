@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/pagos.php - Endpoints de Pagos (Stripe)
-// ============================================================
+
 
 function handle_pagos_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';

@@ -1,13 +1,9 @@
--- ============================================================
--- Base de Datos MySQL: El Limpiecito
--- Archivo de migración compatible con phpMyAdmin / XAMPP
--- ============================================================
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
--- --------------------------------------------------------
 
 -- Tabla: Usuario
 CREATE TABLE `Usuario` (
@@ -25,14 +21,11 @@ CREATE TABLE `Usuario` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insertar usuario admin inicial por defecto (password: admin123)
--- Hash generado usando password_hash('admin123', PASSWORD_DEFAULT)
 INSERT INTO `Usuario` (`id`, `nombre`, `email`, `password_hash`, `telefono`, `rol`, `activo`, `nivel`) VALUES
 (UUID(), 'Administrador Principal', 'admin@ellimpiecito.com', '$2y$10$wE0p7M1gO1A0h2F6t.dJTu/91BqzqR2XqZ5O5c5l2nB0n4a9jCgP2', '5551234567', 'admin', 1, 'VIP');
 
--- --------------------------------------------------------
 
--- Tabla: Categoria
+
 CREATE TABLE `Categoria` (
   `id` VARCHAR(36) NOT NULL,
   `nombre` VARCHAR(100) NOT NULL,
@@ -44,16 +37,13 @@ CREATE TABLE `Categoria` (
   UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Categorías por defecto
 INSERT INTO `Categoria` (`id`, `nombre`, `slug`, `icono`) VALUES
 (UUID(), 'Limpieza del Hogar', 'limpieza-hogar', '🏠'),
 (UUID(), 'Lavandería', 'lavanderia', '🧺'),
 (UUID(), 'Desinfectantes', 'desinfectantes', '🛡️'),
 (UUID(), 'Cuidado Personal', 'cuidado-personal', '🧼');
 
--- --------------------------------------------------------
 
--- Tabla: Proveedor
 CREATE TABLE `Proveedor` (
   `id` VARCHAR(36) NOT NULL,
   `nombre` VARCHAR(200) NOT NULL,
@@ -66,9 +56,7 @@ CREATE TABLE `Proveedor` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
--- Tabla: Producto
 CREATE TABLE `Producto` (
   `id` VARCHAR(36) NOT NULL,
   `nombre` VARCHAR(200) NOT NULL,
@@ -98,7 +86,6 @@ ALTER TABLE `Producto`
   ADD CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `Categoria` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_producto_proveedor` FOREIGN KEY (`proveedor_id`) REFERENCES `Proveedor` (`id`) ON DELETE SET NULL;
 
--- --------------------------------------------------------
 
 -- Tabla: Carrito
 CREATE TABLE `Carrito` (
@@ -114,7 +101,6 @@ CREATE TABLE `Carrito` (
 ALTER TABLE `Carrito`
   ADD CONSTRAINT `fk_carrito_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `Usuario` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
 
 -- Tabla: ItemCarrito
 CREATE TABLE `ItemCarrito` (

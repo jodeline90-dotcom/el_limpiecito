@@ -1,10 +1,6 @@
--- ============================================================
--- sql/002_cobertura_jerez.sql
--- Tabla y catálogo de cobertura de envío local para Jerez de García Salinas, Zacatecas
--- Ejecutar en el SQL Editor de Supabase
--- ============================================================
 
--- 1. Crear tabla de Cobertura Local (Idempotente)
+
+
 CREATE TABLE IF NOT EXISTS "CoberturaJerez" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     colonia VARCHAR(150) NOT NULL UNIQUE,
@@ -15,7 +11,7 @@ CREATE TABLE IF NOT EXISTS "CoberturaJerez" (
     fecha_creacion TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. Limpiar e insertar catálogo pre-sembrado de Jerez de García Salinas
+
 TRUNCATE TABLE "CoberturaJerez" CASCADE;
 
 INSERT INTO "CoberturaJerez" (colonia, codigo_postal, costo_envio, tiempo_estimado, activo) VALUES

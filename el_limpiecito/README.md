@@ -1,7 +1,4 @@
 # 🧹 El Limpiecito — Tienda Online (PHP & MySQL)
-
-Este es el proyecto de la tienda online de productos de limpieza **El Limpiecito**, migrado completamente a una arquitectura clásica, robusta y fácil de desplegar usando **PHP** y **MySQL**.
-
 ---
 
 ## 📁 Estructura del Proyecto
@@ -29,9 +26,9 @@ el_limpiecito/
 
 ---
 
-## 🚀 Guía de Instalación y Ejecución Local (XAMPP)
+## Guía de Instalación y Ejecución Local (XAMPP)
 
-Para que el proyecto funcione en tu computadora local o para que tu profesor lo revise, sigue estos sencillos pasos:
+Para que el proyecto funcione en tu computadora local, sigue estos sencillos pasos:
 
 ### 1. Requisitos Previos
 * Tener instalado **XAMPP** (con soporte para PHP 8.x y MySQL/MariaDB).
@@ -67,13 +64,13 @@ Abre el panel de control de XAMPP e inicia los siguientes servicios:
 
 ### 6. Ejecutar la aplicación
 Una vez configurado todo, abre tu navegador favorito y accede a:
-👉 [**http://localhost/el_limpiecito/frontend/index.html**](http://localhost/el_limpiecito/frontend/index.html)
+ [**http://localhost/el_limpiecito/frontend/index.html**](http://localhost/el_limpiecito/frontend/index.html)
 
 El frontend detectará automáticamente la ruta relativa de la API (`/el_limpiecito/api/`) para comunicarse con la base de datos.
 
 ---
 
-## 🔑 Cuentas de Acceso de Prueba
+## Cuentas de Acceso de Prueba
 
 El script SQL incluye cuentas de prueba precargadas para evaluar el funcionamiento del sistema:
 

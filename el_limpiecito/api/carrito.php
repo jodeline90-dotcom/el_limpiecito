@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/carrito.php - Endpoints de Carrito de Compras
-// ============================================================
+
 
 function handle_carrito_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';

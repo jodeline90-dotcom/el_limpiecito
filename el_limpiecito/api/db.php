@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/db.php - Conexión PDO a MySQL (Singleton)
-// ============================================================
+
 
 require_once __DIR__ . '/config.php';
 
@@ -39,7 +37,7 @@ class DB {
     }
 }
 
-// Helper para uso rápido
+// Helper 
 function get_db_connection() {
     return DB::getInstance()->getConnection();
 }

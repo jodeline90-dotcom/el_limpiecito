@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/auth.php - Endpoints de Autenticación
-// ============================================================
+
 
 function handle_auth_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';
@@ -32,7 +30,6 @@ function handle_auth_routes($method, $segments, $data) {
             $stmt = $pdo->prepare("INSERT INTO Usuario (id, nombre, email, password_hash, telefono) VALUES (?, ?, ?, ?, ?)");
             $stmt->execute([$id, $data['nombre'], $email, $password_hash, $telefono]);
             
-            // Crear carrito enlazado
             $carrito_id = generate_uuid();
             $stmt = $pdo->prepare("INSERT INTO Carrito (id, usuario_id) VALUES (?, ?)");
             $stmt->execute([$carrito_id, $id]);
@@ -44,7 +41,6 @@ function handle_auth_routes($method, $segments, $data) {
             
             $pdo->commit();
             
-            // Enviar email de bienvenida (background o síncrono simple)
             $contenido = "
                 <h2>¡Bienvenido, {$data['nombre']}! 🎉</h2>
                 <p>Tu cuenta en <strong>El Limpiecito</strong> ha sido creada exitosamente.</p>
@@ -96,10 +92,9 @@ function handle_auth_routes($method, $segments, $data) {
                 send_error_response("Cuenta desactivada. Contacta soporte.", 403);
             }
             
-            // Log successful attempt
             $pdo->prepare("INSERT INTO IntentoLogin (ip, email, exitoso) VALUES (?, ?, 1)")->execute([$ip, $email]);
             
-            // Configurar Sesión en PHP y regresar el session_id como token
+           
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
@@ -111,7 +106,7 @@ function handle_auth_routes($method, $segments, $data) {
                 'nivel' => $user['nivel']
             ];
             
-            // Retornamos la respuesta tal cual lo espera el frontend
+            
             send_json_response([
                 "access_token" => session_id(),
                 "token_type" => "bearer",
@@ -119,15 +114,14 @@ function handle_auth_routes($method, $segments, $data) {
             ]);
             
         } else {
-            // Log failed attempt
+            
             $pdo->prepare("INSERT INTO IntentoLogin (ip, email, exitoso) VALUES (?, ?, 0)")->execute([$ip, $email]);
             send_error_response("Credenciales incorrectas", 401);
         }
     }
     
     if ($method === 'POST' && $action === 'recuperar-password') {
-        // En producción real, se insertaría un token en la DB
-        // Por ahora simulamos la misma respuesta del FastAPI para UX
+        
         send_json_response(["mensaje" => "Si el correo está registrado, recibirás un enlace."]);
     }
     

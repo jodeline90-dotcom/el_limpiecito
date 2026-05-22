@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/productos.php - Endpoints de Productos
-// ============================================================
+
 
 function handle_productos_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';
@@ -64,10 +62,10 @@ function handle_productos_routes($method, $segments, $data) {
         $stmt->execute($params);
         $productos = $stmt->fetchAll();
         
-        // Mapeo (imágenes simuladas por ahora o leídas de filesystem en el futuro)
+        // Mapeo 
         foreach ($productos as &$p) {
             $p['imagenes'] = []; 
-            // Ratings mock o calculado (ideal: hacer un query agrupado)
+            // Ratings mock o calculado 
             $stmt_r = $pdo->prepare("SELECT AVG(estrellas) as prom, COUNT(*) as tot FROM Resena WHERE producto_id = ?");
             $stmt_r->execute([$p['id']]);
             $res = $stmt_r->fetch();

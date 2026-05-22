@@ -1,8 +1,5 @@
 <?php
-// ============================================================
-// api/config.example.php - Configuraciones base de El Limpiecito
-// Copia este archivo como config.php e ingresa tus valores reales
-// ============================================================
+
 
 // --- Base de Datos (MySQL) ---
 define('DB_HOST', 'localhost');

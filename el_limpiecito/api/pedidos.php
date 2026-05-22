@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/pedidos.php - Endpoints de Pedidos (Transaccionales)
-// ============================================================
+
 
 function handle_pedidos_routes($method, $segments, $data) {
     $action = $segments[1] ?? '';

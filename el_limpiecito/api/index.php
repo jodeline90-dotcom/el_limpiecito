@@ -1,7 +1,5 @@
 <?php
-// ============================================================
-// api/index.php - Controlador Frontal (Router de la API PHP)
-// ============================================================
+
 
 // Habilitar CORS
 header("Access-Control-Allow-Origin: *");
