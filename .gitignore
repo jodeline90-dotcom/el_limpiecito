@@ -34,7 +34,6 @@ api/config.php
 api/uploads/
 
 # Archivos de la arquitectura vieja (Python/Supabase)
-app/
 migrations/
 requirements.txt
 Procfile
