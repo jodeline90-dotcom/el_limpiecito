@@ -47,3 +47,5 @@ Pillow==11.0.0                  # Procesamiento de imágenes
 
 # Logging
 loguru==0.7.3
+
+# rebuild
