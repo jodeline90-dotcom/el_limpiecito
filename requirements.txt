@@ -1,0 +1,49 @@
+# ============================================================
+# El Limpiecito - Dependencias Python
+# ============================================================
+
+# Framework principal
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# Base de datos / Supabase
+supabase==2.10.0
+psycopg2-binary==2.9.10        # Conexión directa para transacciones
+sqlalchemy==2.0.36              # ORM para transacciones complejas
+
+# Autenticación y seguridad
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+python-multipart==0.0.12        # Para subida de archivos
+
+# Validación de datos
+pydantic==2.10.3
+pydantic-settings==2.6.1
+email-validator==2.2.0
+
+# Pagos
+stripe==11.2.0
+
+# Email
+resend==2.4.0
+
+# PDFs (Comentado temporalmente por error de GTK en Windows)
+# weasyprint==62.3
+
+# Rate limiting
+slowapi==0.1.9
+limits==3.14.0
+
+# HTTP client
+httpx>=0.27.0,<0.28.0
+
+# Variables de entorno
+python-dotenv==1.0.1
+
+# Utilidades
+python-dateutil==2.9.0
+Pillow==11.0.0                  # Procesamiento de imágenes
+
+# Logging
+loguru==0.7.3
