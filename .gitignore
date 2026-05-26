@@ -1,0 +1,43 @@
+# Entorno virtual
+venv/
+.venv/
+env/
+
+# Variables de entorno
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Logs
+logs/
+*.log
+
+# Archivos temporales
+*.tmp
+*.pdf
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Railway
+.railway/
+
+# PHP API Configuracion e Imagenes Locales
+api/config.php
+api/uploads/
+
+# Archivos de la arquitectura vieja (Python/Supabase)
+app/
+migrations/
+requirements.txt
+Procfile
+railway.toml
+iniciar_tienda.bat
+
