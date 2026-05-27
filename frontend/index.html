@@ -1550,7 +1550,7 @@
               onclick="mostrarVista('PaginaLegal')" style="color:var(--principal);">términos y política de
               privacidad</a></span>
         </div>
-        <button class="btn btn-acento btn-completo btn-grande">Crear cuenta</button>
+        <button class="btn btn-acento btn-completo btn-grande" onclick="hacerRegistro()">Crear cuenta</button>
         <p style="text-align:center;font-size:13px;margin-top:16px;color:var(--texto-secundario);">¿Ya tienes cuenta? <a
             href="#" onclick="mostrarVista('VistaInicioSesion')" style="color:var(--principal);font-weight:600;">Iniciar
             sesión</a></p>
@@ -3554,51 +3554,87 @@
 
 
   <script>
-    let API_URL = "http://localhost:8000"; // fallback para desarrollo
-    if (window.location.protocol.startsWith("http")) {
-      const path = window.location.pathname;
-      if (path.includes("/frontend/")) {
-        API_URL = window.location.origin + path.substring(0, path.indexOf("/frontend/")) + "/api";
-      } else {
-        API_URL = window.location.origin + path.substring(0, path.lastIndexOf("/")) + "/api";
-      }
-    }
+    let API_URL = "https://el-limpiecito.onrender.com"; // fallback para desarrollo
+    
+    
     let productos = [];
 
     // Autenticación
-    async function hacerLogin() {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
+  async function hacerLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
 
-      try {
-        const response = await fetch(`${API_URL}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
+  if (!email || !password) {
+    alert('Por favor ingresa tu correo y contraseña');
+    return;
+  }
 
-        if (response.ok) {
-          const data = await response.json();
-          localStorage.setItem("access_token", data.access_token);
-          localStorage.setItem("usuario", JSON.stringify(data.usuario));
-          
-          if (data.usuario.rol === 'admin') {
-            actualizarNombreAdmin(data.usuario.nombre);
-            mostrarVista('PanelControl');
-          } else {
-            cargarCarrito();
-            mostrarVista('PaginaInicio');
-          }
-        } else {
-          const errorData = await response.json();
-          alert("Error: " + (errorData.detail || "Correo o contraseña incorrectos"));
-        }
-      } catch (error) {
-        console.error("Error al conectar con el servidor:", error);
-        alert("No se pudo conectar al servidor. Asegúrate de que el backend esté corriendo.");
+  try {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('usuario', JSON.stringify(data.usuario));
+      if (data.usuario.rol === 'admin') {
+        actualizarNombreAdmin(data.usuario.nombre);
+        mostrarVista('PanelControl');
+      } else {
+        cargarCarrito();
+        mostrarVista('PaginaInicio');
       }
+    } else {
+      alert('Error: ' + (data.detail || 'Email o contraseña incorrectos'));
     }
+  } catch (e) {
+    alert('No se pudo conectar al servidor. Asegúrate de que el backend esté corriendo.');
+  }
+}
+async function hacerRegistro() {
+  const inputs = document.querySelectorAll('#VistaRegistro .control-formulario');
+  const nombre = inputs[0].value;
+  const apellido = inputs[1].value;
+  const email = inputs[2].value;
+  const password = inputs[3].value;
+  const confirmar = inputs[4].value;
 
+  if (!nombre || !apellido || !email || !password) {
+    alert('Por favor llena todos los campos');
+    return;
+  }
+  if (password !== confirmar) {
+    alert('Las contraseñas no coinciden');
+    return;
+  }
+  if (password.length < 8) {
+    alert('La contraseña debe tener mínimo 8 caracteres');
+    return;
+  }
+  if (!/[A-Z]/.test(password)) {
+    alert('La contraseña debe tener al menos una mayúscula');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/auth/registro`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: `${nombre} ${apellido}`, email, password })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      alert('¡Cuenta creada! Ya puedes iniciar sesión.');
+      mostrarVista('VistaInicioSesion');
+    } else {
+      alert('Error: ' + (data.detail || 'No se pudo crear la cuenta'));
+    }
+  } catch (e) {
+    alert('Error al conectar con el servidor');
+  }
+}
     function actualizarNombreAdmin(nombre) {
       const el = document.getElementById('adminNombreSidebar');
       if (el) el.textContent = nombre || 'Administrador';

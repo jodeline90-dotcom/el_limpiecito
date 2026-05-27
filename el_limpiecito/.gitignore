@@ -33,11 +33,5 @@ logs/
 api/config.php
 api/uploads/
 
-# Archivos de la arquitectura vieja (Python/Supabase)
-app/
-migrations/
-requirements.txt
-Procfile
-railway.toml
-iniciar_tienda.bat
-
+# Carpeta venv dentro del proyecto viejo
+el_limpiecito/venv/
