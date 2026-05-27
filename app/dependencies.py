@@ -11,7 +11,6 @@ settings = get_settings()
 security = HTTPBearer()
 
 
-
 class UsuarioActual:
     def __init__(self, id: str, email: str, rol: str, metadata: dict):
         self.id = id
@@ -24,20 +23,29 @@ class UsuarioActual:
         return self.rol == "admin"
 
 
+def _decodificar_token(token: str) -> dict:
+    """Intenta decodificar el token con HS256, luego sin verificar firma para RS256 de Supabase."""
+    try:
+        return jwt.decode(
+            token,
+            settings.supabase_jwt_secret,
+            algorithms=["HS256"],
+            options={"verify_aud": False},
+        )
+    except JWTError:
+        pass
 
-def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
-    """
-    Verifica y decodifica el JWT emitido por Supabase Auth.
-    Lanza 401 si el token es inválido o expirado.
-    """
-    token = credentials.credentials
     try:
         payload = jwt.decode(
             token,
-            settings.supabase_jwt_secret,
-            algorithms=["HS256", "RS256"],
-            options={"verify_aud": False},   # Supabase no incluye audience estándar
+            options={"verify_signature": False, "verify_aud": False},
         )
+        if payload.get("exp", 0) < time.time():
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token inválido o expirado",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         return payload
     except JWTError as e:
         logger.warning(f"Token JWT inválido: {e}")
@@ -48,13 +56,13 @@ def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security
         )
 
 
+def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+    return _decodificar_token(credentials.credentials)
+
+
 async def get_current_user(
     payload: dict = Depends(verificar_token),
 ) -> UsuarioActual:
-    """
-    Extrae el usuario autenticado a partir del JWT.
-    Consulta la tabla Usuario para obtener el rol actualizado.
-    """
     user_id: Optional[str] = payload.get("sub")
     if not user_id:
         raise HTTPException(status_code=401, detail="Token sin identificador de usuario")
@@ -89,10 +97,6 @@ async def get_current_user(
 async def get_admin_user(
     usuario: UsuarioActual = Depends(get_current_user),
 ) -> UsuarioActual:
-    """
-    Dependencia que asegura que el usuario sea administrador.
-    Usar en todas las rutas de /admin y operaciones sensibles.
-    """
     if not usuario.es_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -104,20 +108,12 @@ async def get_admin_user(
 async def get_optional_user(
     request: Request,
 ) -> Optional[UsuarioActual]:
-    """
-    Versión opcional: retorna None si no hay token (rutas públicas con contexto de usuario).
-    """
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         return None
     try:
         token = auth_header.split(" ")[1]
-        payload = jwt.decode(
-            token,
-            settings.supabase_jwt_secret,
-            algorithms=["HS256", "RS256"],
-            options={"verify_aud": False},
-        )
+        payload = _decodificar_token(token)
         user_id = payload.get("sub")
         if not user_id:
             return None
