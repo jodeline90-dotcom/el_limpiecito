@@ -1,5 +1,3 @@
-
-
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
@@ -37,7 +35,7 @@ def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security
         payload = jwt.decode(
             token,
             settings.supabase_jwt_secret,
-            algorithms=["HS256"],
+            algorithms=["HS256", "RS256"],
             options={"verify_aud": False},   # Supabase no incluye audience estándar
         )
         return payload
@@ -117,7 +115,7 @@ async def get_optional_user(
         payload = jwt.decode(
             token,
             settings.supabase_jwt_secret,
-            algorithms=["HS256"],
+            algorithms=["HS256", "RS256"],
             options={"verify_aud": False},
         )
         user_id = payload.get("sub")
